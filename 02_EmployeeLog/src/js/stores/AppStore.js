@@ -36,6 +36,8 @@ AppDispatcher.register(function(payload){
 			//Store SAVE_EMPLOYEE
 			AppStore.saveEmployee(action.employee);
 
+			//Save AppAPI
+			AppAPI.saveEmployee(action.employee);
 			//Emit change
 			AppStore.emitChange();
 	}
