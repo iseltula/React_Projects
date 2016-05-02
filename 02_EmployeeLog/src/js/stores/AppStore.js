@@ -9,11 +9,14 @@ var CHANGE_EVENT = 'change';
 var _employees = [];
 
 var AppStore = assign({}, EventEmitter.prototype, {
+	getEmployees: function(){
+		return 	_employees;
+	},
 	saveEmployee: function(employee){
 		_employees.push(employee);
 	},
-	getEmployee: function(employee){
-	return _employees;
+	setEmployees: function(employees){
+		_employees = employees;
 	},
 	emitChange: function(){
 		this.emit(CHANGE_EVENT);
@@ -38,8 +41,20 @@ AppDispatcher.register(function(payload){
 
 			//Save AppAPI
 			AppAPI.saveEmployee(action.employee);
+
 			//Emit change
 			AppStore.emitChange();
+			break;
+
+		case AppConstants.RECEIVE_EMPLOYEE:
+			console.log('Receiving Employee');
+
+			//Store SAVE_EMPLOYEE
+			AppStore.setEmployees(action.employees);
+
+			//Emit change
+			AppStore.emitChange();
+			break;
 	}
 
 	return true;

@@ -7,6 +7,12 @@ var AppActions = {
         actionType: AppConstants.SAVE_EMPLOYEE,
         employee:employee
       });
+    },
+    receiveEmployee: function(employees){
+      AppDispatcher.handleViewAction({
+        actionType: AppConstants.RECEIVE_EMPLOYEE,
+        employees:employees
+      });
     }
 }
 

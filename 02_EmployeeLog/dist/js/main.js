@@ -20009,6 +20009,12 @@ var AppActions = {
         actionType: AppConstants.SAVE_EMPLOYEE,
         employee:employee
       });
+    },
+    receiveEmployee: function(employees){
+      AppDispatcher.handleViewAction({
+        actionType: AppConstants.RECEIVE_EMPLOYEE,
+        employees:employees
+      });
     }
 }
 
@@ -20107,7 +20113,7 @@ var AddForm = require('./AddForm.js');
 
 function getAppState(){
 	return {
-		employees: AppStore.getEmployee()
+		employees: AppStore.getEmployees()
 	}
 }
 
@@ -20142,7 +20148,8 @@ var App = React.createClass({displayName: "App",
 module.exports = App;
 },{"../actions/AppActions":165,"../stores/AppStore":171,"./AddForm.js":166,"react":164}],168:[function(require,module,exports){
 module.exports = {
-	SAVE_EMPLOYEE: 'SAVE_EMPLOYEE'
+	SAVE_EMPLOYEE: 'SAVE_EMPLOYEE',
+	RECEIVE_EMPLOYEE: 'RECEIVE_EMPLOYEE'
 }
 },{}],169:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
@@ -20166,7 +20173,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var AppAPI = require('./utils/appAPI.js');
 
-//AppAPI.getEmployees();
+AppAPI.getEmployees();
 
 ReactDOM.render(
 	React.createElement(App, null),
@@ -20184,11 +20191,14 @@ var CHANGE_EVENT = 'change';
 var _employees = [];
 
 var AppStore = assign({}, EventEmitter.prototype, {
+	getEmployees: function(){
+		return 	_employees;
+	},
 	saveEmployee: function(employee){
 		_employees.push(employee);
 	},
-	getEmployee: function(employee){
-	return _employees;
+	setEmployees: function(employees){
+		_employees = employees;
 	},
 	emitChange: function(){
 		this.emit(CHANGE_EVENT);
@@ -20213,8 +20223,20 @@ AppDispatcher.register(function(payload){
 
 			//Save AppAPI
 			AppAPI.saveEmployee(action.employee);
+
 			//Emit change
 			AppStore.emitChange();
+			break;
+
+		case AppConstants.RECEIVE_EMPLOYEE:
+			console.log('Receiving Employee');
+
+			//Store SAVE_EMPLOYEE
+			AppStore.setEmployees(action.employees);
+
+			//Emit change
+			AppStore.emitChange();
+			break;
 	}
 
 	return true;
@@ -20231,6 +20253,26 @@ module.exports = {
 		this.firebaseRef.push({
 			employee: employee
 		});
+	},
+	getEmployees: function(){
+		this.firebaseRef = new Firebase('https://employeelistfire.firebaseio.com/employee');
+		this.firebaseRef.once("value", function(snapshot){
+			var employees =[];
+			snapshot.forEach(function(childSnapshot){
+				var employee = {
+					id: childSnapshot.key(),
+					empNumber: childSnapshot.val().employee.empNumber,
+					firstName: childSnapshot.val().employee.firstName,
+					lastName: childSnapshot.val().employee.lastName,
+					middleName: childSnapshot.val().employee.middleName,
+					age: childSnapshot.val().employee.age,
+					designation: childSnapshot.val().employee.designation,
+					salary: childSnapshot.val().employee.salary
+				}
+				employees.push(employee);
+				AppActions.receiveEmployee(employee);
+			});
+		});
 	}
 }
 },{"../actions/AppActions":165,"firebase":3}],173:[function(require,module,exports){
@@ -20242,6 +20284,26 @@ module.exports = {
 		this.firebaseRef = new Firebase('https://employeelistfire.firebaseio.com/employee');
 		this.firebaseRef.push({
 			employee: employee
+		});
+	},
+	getEmployees: function(){
+		this.firebaseRef = new Firebase('https://employeelistfire.firebaseio.com/employee');
+		this.firebaseRef.once("value", function(snapshot){
+			var employees =[];
+			snapshot.forEach(function(childSnapshot){
+				var employee = {
+					id: childSnapshot.key(),
+					empNumber: childSnapshot.val().employee.empNumber,
+					firstName: childSnapshot.val().employee.firstName,
+					lastName: childSnapshot.val().employee.lastName,
+					middleName: childSnapshot.val().employee.middleName,
+					age: childSnapshot.val().employee.age,
+					designation: childSnapshot.val().employee.designation,
+					salary: childSnapshot.val().employee.salary
+				}
+				employees.push(employee);
+				AppActions.receiveEmployee(employee);
+			});
 		});
 	}
 }

@@ -3,7 +3,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var AppAPI = require('./utils/appAPI.js');
 
-//AppAPI.getEmployees();
+AppAPI.getEmployees();
 
 ReactDOM.render(
 	<App />,

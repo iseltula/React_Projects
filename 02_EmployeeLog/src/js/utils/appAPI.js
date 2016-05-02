@@ -7,9 +7,8 @@ module.exports = {
 		this.firebaseRef.push({
 			employee: employee
 		});
-	}
-},
-	getEmployee: function(){
+	},
+	getEmployees: function(){
 		this.firebaseRef = new Firebase('https://employeelistfire.firebaseio.com/employee');
 		this.firebaseRef.once("value", function(snapshot){
 			var employees =[];
@@ -29,3 +28,4 @@ module.exports = {
 			});
 		});
 	}
+}

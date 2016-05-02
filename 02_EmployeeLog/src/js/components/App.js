@@ -5,7 +5,7 @@ var AddForm = require('./AddForm.js');
 
 function getAppState(){
 	return {
-		employees: AppStore.getEmployee()
+		employees: AppStore.getEmployees()
 	}
 }
 

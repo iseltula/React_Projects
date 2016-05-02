@@ -8,11 +8,12 @@ var CHANGE_EVENT = 'change';
 
 var _contacts = [];
 var _contact_to_edit = '';
+
 var AppStore = assign({}, EventEmitter.prototype, {
-	getContacts:function(){
+	getContacts: function(){
 		return 	_contacts;
 	},
-	saveContact:function(contact){
+	saveContact: function(contact){
 		_contacts.push(contact);
 	},
 	setContacts: function(contacts){
