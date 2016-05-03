@@ -2,18 +2,18 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
 
 var AppActions = {
-    saveEmployee: function(employee){
-      AppDispatcher.handleViewAction({
-        actionType: AppConstants.SAVE_EMPLOYEE,
-        employee:employee
-      });
-    },
-    receiveEmployee: function(employees){
-      AppDispatcher.handleViewAction({
-        actionType: AppConstants.RECEIVE_EMPLOYEE,
-        employees:employees
-      });
-    }
+	saveMember: function(member){
+		AppDispatcher.handleViewAction({
+			actionType: AppConstants.SAVE_MEMBER,
+			member:member
+		});
+	},
+	receiveMembers: function(members){
+		AppDispatcher.handleViewAction({
+			actionType: AppConstants.RECEIVE_MEMBERS,
+			members:members
+		});
+	}
 }
 
 module.exports = AppActions;

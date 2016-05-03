@@ -20004,18 +20004,18 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
 
 var AppActions = {
-    saveEmployee: function(employee){
-      AppDispatcher.handleViewAction({
-        actionType: AppConstants.SAVE_EMPLOYEE,
-        employee:employee
-      });
-    },
-    receiveEmployee: function(employees){
-      AppDispatcher.handleViewAction({
-        actionType: AppConstants.RECEIVE_EMPLOYEE,
-        employees:employees
-      });
-    }
+	saveMember: function(member){
+		AppDispatcher.handleViewAction({
+			actionType: AppConstants.SAVE_MEMBER,
+			member:member
+		});
+	},
+	receiveMembers: function(members){
+		AppDispatcher.handleViewAction({
+			actionType: AppConstants.RECEIVE_MEMBERS,
+			members:members
+		});
+	}
 }
 
 module.exports = AppActions;
@@ -20024,75 +20024,76 @@ var React = require('react');
 var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
 
+
 var AddForm = React.createClass({displayName: "AddForm",
 	render: function(){
 		return(
-        React.createElement("div", {id: "AddSection"}, 
-  				React.createElement("h3", null, "Add Employee"), 
-          React.createElement("form", {className: "form-horizontal", name: "LogForm", onSubmit: this.handleSubmit}, 
-            React.createElement("div", {className: "form-group"}, 
-              React.createElement("label", {className: "control-label col-md-4"}, "Employee Number"), 
-              React.createElement("div", {className: "col-md-5"}, 
-                React.createElement("input", {type: "text", ref: "empNumber", className: "form-control"})
-              )
-            ), 
+      React.createElement("div", {id: "AddSection"}, 
+        React.createElement("h3", null, "Add Employee"), 
+        React.createElement("form", {className: "form-horizontal", name: "LogForm", onSubmit: this.handleSubmit}, 
+          React.createElement("div", {className: "form-group"}, 
+            React.createElement("label", {className: "control-label col-md-4"}, "Employee Number"), 
+            React.createElement("div", {className: "col-md-5"}, 
+              React.createElement("input", {type: "text", ref: "empNumber", className: "form-control"})
+            )
+          ), 
 
-            React.createElement("div", {className: "form-group "}, 
-              React.createElement("label", {className: "control-label col-md-4"}, "First Name"), 
-              React.createElement("div", {className: "col-md-5"}, 
-                React.createElement("input", {type: "text", ref: "firstName", className: "form-control"})
-              )
-            ), 
+          React.createElement("div", {className: "form-group "}, 
+            React.createElement("label", {className: "control-label col-md-4"}, "First Name"), 
+            React.createElement("div", {className: "col-md-5"}, 
+              React.createElement("input", {type: "text", ref: "firstName", className: "form-control"})
+            )
+          ), 
 
-            React.createElement("div", {className: "form-group "}, 
-              React.createElement("label", {className: "control-label col-md-4"}, "Last Name"), 
-              React.createElement("div", {className: "col-md-5"}, 
-                React.createElement("input", {type: "text", ref: "lastName", className: "form-control"})
-              )
-            ), 
+          React.createElement("div", {className: "form-group "}, 
+            React.createElement("label", {className: "control-label col-md-4"}, "Last Name"), 
+            React.createElement("div", {className: "col-md-5"}, 
+              React.createElement("input", {type: "text", ref: "lastName", className: "form-control"})
+            )
+          ), 
 
-            React.createElement("div", {className: "form-group "}, 
-              React.createElement("label", {className: "control-label col-md-4 "}, "Middle Name"), 
-              React.createElement("div", {className: "col-md-5"}, 
-                React.createElement("input", {type: "text", ref: "middleName", className: "form-control"})
-              )
-            ), 
+          React.createElement("div", {className: "form-group "}, 
+            React.createElement("label", {className: "control-label col-md-4 "}, "Middle Name"), 
+            React.createElement("div", {className: "col-md-5"}, 
+              React.createElement("input", {type: "text", ref: "middleName", className: "form-control"})
+            )
+          ), 
 
-            React.createElement("div", {className: "form-group "}, 
-              React.createElement("label", {className: "control-label col-md-4"}, "Age"), 
-              React.createElement("div", {className: "col-md-5"}, 
-                React.createElement("input", {type: "text", ref: "age", className: "form-control"})
-              )
-            ), 
+          React.createElement("div", {className: "form-group "}, 
+            React.createElement("label", {className: "control-label col-md-4"}, "Age"), 
+            React.createElement("div", {className: "col-md-5"}, 
+              React.createElement("input", {type: "text", ref: "age", className: "form-control"})
+            )
+          ), 
 
-            React.createElement("div", {className: "form-group"}, 
-				      React.createElement("label", {className: "control-label col-md-4"}, "Designation"), 
-        				React.createElement("div", {className: "col-md-5"}, 
-        					React.createElement("select", {className: "form-control", ref: "designation"}, 
-        						React.createElement("option", null, "Senior Manager"), 
-        						React.createElement("option", null, "Manager"), 
-        						React.createElement("option", null, "Assistant Manager"), 
-        						React.createElement("option", null, "Lead"), 
-        						React.createElement("option", null, "Senior Consultant"), 
-        						React.createElement("option", null, "Consultant")
-        					)
-	              )
-			     ), 
-
-            React.createElement("div", {className: "form-group"}, 
-              React.createElement("label", {className: "control-label col-md-4"}, "Salary"), 
+          React.createElement("div", {className: "form-group"}, 
+            React.createElement("label", {className: "control-label col-md-4"}, "Designation"), 
               React.createElement("div", {className: "col-md-5"}, 
-                React.createElement("input", {type: "text", ref: "salary", className: "form-control"})
+                React.createElement("select", {className: "form-control", ref: "designation"}, 
+                  React.createElement("option", null, "Senior Manager"), 
+                  React.createElement("option", null, "Manager"), 
+                  React.createElement("option", null, "Assistant Manager"), 
+                  React.createElement("option", null, "Lead"), 
+                  React.createElement("option", null, "Senior Consultant"), 
+                  React.createElement("option", null, "Consultant")
+                )
               )
-            ), 
-            React.createElement("button", {type: "submit", className: "btn btn-success btn-md"}, " Submit")
-          )
-  			)
+         ), 
+
+          React.createElement("div", {className: "form-group"}, 
+            React.createElement("label", {className: "control-label col-md-4"}, "Salary"), 
+            React.createElement("div", {className: "col-md-5"}, 
+              React.createElement("input", {type: "text", ref: "salary", className: "form-control"})
+            )
+          ), 
+          React.createElement("button", {type: "submit", className: "btn btn-success btn-md"}, " Submit")
+        )
+      )
 		);
 	},
   handleSubmit:function(e){
     e.preventDefault();
-    var employee = {
+    var member = {
       empNumber: this.refs.empNumber.value.trim(),
       firstName: this.refs.firstName.value.trim(),
       lastName: this.refs.lastName.value.trim(),
@@ -20101,9 +20102,10 @@ var AddForm = React.createClass({displayName: "AddForm",
       designation: this.refs.designation.value.trim(),
       salary: this.refs.salary.value.trim()
     }
-    AppActions.saveEmployee(employee);
+    AppActions.saveMember(member);
   }
 });
+
 module.exports = AddForm;
 },{"../actions/AppActions":165,"../stores/AppStore":171,"react":164}],167:[function(require,module,exports){
 var React = require('react');
@@ -20113,7 +20115,7 @@ var AddForm = require('./AddForm.js');
 
 function getAppState(){
 	return {
-		employees: AppStore.getEmployees()
+			members: AppStore.getMembers()
 	}
 }
 
@@ -20131,7 +20133,7 @@ var App = React.createClass({displayName: "App",
 	},
 
 	render: function(){
-		console.log(this.state.employees)
+		console.log(this.state.members);
 		return(
 			React.createElement("div", null, 
 				React.createElement(AddForm, null)
@@ -20148,8 +20150,8 @@ var App = React.createClass({displayName: "App",
 module.exports = App;
 },{"../actions/AppActions":165,"../stores/AppStore":171,"./AddForm.js":166,"react":164}],168:[function(require,module,exports){
 module.exports = {
-	SAVE_EMPLOYEE: 'SAVE_EMPLOYEE',
-	RECEIVE_EMPLOYEE: 'RECEIVE_EMPLOYEE'
+	SAVE_MEMBER: 'SAVE_MEMBER',
+	RECEIVE_MEMBERS: 'RECEIVE_MEMBERS'
 }
 },{}],169:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
@@ -20173,7 +20175,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var AppAPI = require('./utils/appAPI.js');
 
-AppAPI.getEmployees();
+AppAPI.getMembers();
 
 ReactDOM.render(
 	React.createElement(App, null),
@@ -20188,17 +20190,17 @@ var AppAPI = require('../utils/AppAPI.js');
 
 var CHANGE_EVENT = 'change';
 
-var _employees = [];
+var _members = [];
 
 var AppStore = assign({}, EventEmitter.prototype, {
-	getEmployees: function(){
-		return 	_employees;
+	saveMember: function(member){
+		_members.push(member);
 	},
-	saveEmployee: function(employee){
-		_employees.push(employee);
-	},
-	setEmployees: function(employees){
-		_employees = employees;
+	getMembers: function(){
+	return _members;
+	},	
+	setMembers: function(members){
+		_members = members
 	},
 	emitChange: function(){
 		this.emit(CHANGE_EVENT);
@@ -20215,24 +20217,23 @@ AppDispatcher.register(function(payload){
 	var action = payload.action;
 
 	switch(action.actionType){
-		case AppConstants.SAVE_EMPLOYEE:
-			console.log('Saving Employee');
+			case AppConstants.SAVE_MEMBER:
+				console.log("Saving Member");
 
-			//Store SAVE_EMPLOYEE
-			AppStore.saveEmployee(action.employee);
+				//Store save
+				AppStore.saveMember(action.member);
 
-			//Save AppAPI
-			AppAPI.saveEmployee(action.employee);
+				//Save API
+				AppAPI.saveMember(action.member);
 
-			//Emit change
-			AppStore.emitChange();
-			break;
+				//Emit change
+				AppStore.emitChange();
+				break;
+		case AppConstants.RECEIVE_MEMBERS:
+			console.log("Receiving Member");
 
-		case AppConstants.RECEIVE_EMPLOYEE:
-			console.log('Receiving Employee');
-
-			//Store SAVE_EMPLOYEE
-			AppStore.setEmployees(action.employees);
+			//Store save
+			AppStore.setMembers(action.members);
 
 			//Emit change
 			AppStore.emitChange();
@@ -20248,29 +20249,29 @@ var Firebase = require('firebase');
 var AppActions = require('../actions/AppActions');
 
 module.exports = {
-	saveEmployee: function(employee){
-		this.firebaseRef = new Firebase('https://employeelistfire.firebaseio.com/employee');
+	saveMember: function(member){
+		this.firebaseRef = new Firebase('https://member-log.firebaseio.com/members');
 		this.firebaseRef.push({
-			employee: employee
+			member: member
 		});
 	},
-	getEmployees: function(){
-		this.firebaseRef = new Firebase('https://employeelistfire.firebaseio.com/employee');
+	getMembers: function(){
+		this.firebaseRef = new Firebase('https://member-log.firebaseio.com/members');
 		this.firebaseRef.once("value", function(snapshot){
-			var employees =[];
+			var members =[];
 			snapshot.forEach(function(childSnapshot){
-				var employee = {
+				var member = {
 					id: childSnapshot.key(),
-					empNumber: childSnapshot.val().employee.empNumber,
-					firstName: childSnapshot.val().employee.firstName,
-					lastName: childSnapshot.val().employee.lastName,
-					middleName: childSnapshot.val().employee.middleName,
-					age: childSnapshot.val().employee.age,
-					designation: childSnapshot.val().employee.designation,
-					salary: childSnapshot.val().employee.salary
+					empNumber: childSnapshot.val().member.empNumber,
+					firstName: childSnapshot.val().member.firstName,
+					lastName: childSnapshot.val().member.lastName,
+					middleName: childSnapshot.val().member.middleName,
+					age: childSnapshot.val().member.age,
+					salary: childSnapshot.val().member.salary,
+					designation: childSnapshot.val().member.designation
 				}
-				employees.push(employee);
-				AppActions.receiveEmployee(employee);
+				members.push(member);
+				AppActions.receiveMembers(members);
 			});
 		});
 	}
@@ -20280,29 +20281,29 @@ var Firebase = require('firebase');
 var AppActions = require('../actions/AppActions');
 
 module.exports = {
-	saveEmployee: function(employee){
-		this.firebaseRef = new Firebase('https://employeelistfire.firebaseio.com/employee');
+	saveMember: function(member){
+		this.firebaseRef = new Firebase('https://member-log.firebaseio.com/members');
 		this.firebaseRef.push({
-			employee: employee
+			member: member
 		});
 	},
-	getEmployees: function(){
-		this.firebaseRef = new Firebase('https://employeelistfire.firebaseio.com/employee');
+	getMembers: function(){
+		this.firebaseRef = new Firebase('https://member-log.firebaseio.com/members');
 		this.firebaseRef.once("value", function(snapshot){
-			var employees =[];
+			var members =[];
 			snapshot.forEach(function(childSnapshot){
-				var employee = {
+				var member = {
 					id: childSnapshot.key(),
-					empNumber: childSnapshot.val().employee.empNumber,
-					firstName: childSnapshot.val().employee.firstName,
-					lastName: childSnapshot.val().employee.lastName,
-					middleName: childSnapshot.val().employee.middleName,
-					age: childSnapshot.val().employee.age,
-					designation: childSnapshot.val().employee.designation,
-					salary: childSnapshot.val().employee.salary
+					empNumber: childSnapshot.val().member.empNumber,
+					firstName: childSnapshot.val().member.firstName,
+					lastName: childSnapshot.val().member.lastName,
+					middleName: childSnapshot.val().member.middleName,
+					age: childSnapshot.val().member.age,
+					salary: childSnapshot.val().member.salary,
+					designation: childSnapshot.val().member.designation
 				}
-				employees.push(employee);
-				AppActions.receiveEmployee(employee);
+				members.push(member);
+				AppActions.receiveMembers(members);
 			});
 		});
 	}

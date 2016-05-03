@@ -6,17 +6,17 @@ var AppAPI = require('../utils/AppAPI.js');
 
 var CHANGE_EVENT = 'change';
 
-var _employees = [];
+var _members = [];
 
 var AppStore = assign({}, EventEmitter.prototype, {
-	getEmployees: function(){
-		return 	_employees;
+	saveMember: function(member){
+		_members.push(member);
 	},
-	saveEmployee: function(employee){
-		_employees.push(employee);
-	},
-	setEmployees: function(employees){
-		_employees = employees;
+	getMembers: function(){
+	return _members;
+	},	
+	setMembers: function(members){
+		_members = members
 	},
 	emitChange: function(){
 		this.emit(CHANGE_EVENT);
@@ -33,24 +33,23 @@ AppDispatcher.register(function(payload){
 	var action = payload.action;
 
 	switch(action.actionType){
-		case AppConstants.SAVE_EMPLOYEE:
-			console.log('Saving Employee');
+			case AppConstants.SAVE_MEMBER:
+				console.log("Saving Member");
 
-			//Store SAVE_EMPLOYEE
-			AppStore.saveEmployee(action.employee);
+				//Store save
+				AppStore.saveMember(action.member);
 
-			//Save AppAPI
-			AppAPI.saveEmployee(action.employee);
+				//Save API
+				AppAPI.saveMember(action.member);
 
-			//Emit change
-			AppStore.emitChange();
-			break;
+				//Emit change
+				AppStore.emitChange();
+				break;
+		case AppConstants.RECEIVE_MEMBERS:
+			console.log("Receiving Member");
 
-		case AppConstants.RECEIVE_EMPLOYEE:
-			console.log('Receiving Employee');
-
-			//Store SAVE_EMPLOYEE
-			AppStore.setEmployees(action.employees);
+			//Store save
+			AppStore.setMembers(action.members);
 
 			//Emit change
 			AppStore.emitChange();

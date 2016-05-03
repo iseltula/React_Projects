@@ -2,29 +2,29 @@ var Firebase = require('firebase');
 var AppActions = require('../actions/AppActions');
 
 module.exports = {
-	saveEmployee: function(employee){
-		this.firebaseRef = new Firebase('https://employeelistfire.firebaseio.com/employee');
+	saveMember: function(member){
+		this.firebaseRef = new Firebase('https://member-log.firebaseio.com/members');
 		this.firebaseRef.push({
-			employee: employee
+			member: member
 		});
 	},
-	getEmployees: function(){
-		this.firebaseRef = new Firebase('https://employeelistfire.firebaseio.com/employee');
+	getMembers: function(){
+		this.firebaseRef = new Firebase('https://member-log.firebaseio.com/members');
 		this.firebaseRef.once("value", function(snapshot){
-			var employees =[];
+			var members =[];
 			snapshot.forEach(function(childSnapshot){
-				var employee = {
+				var member = {
 					id: childSnapshot.key(),
-					empNumber: childSnapshot.val().employee.empNumber,
-					firstName: childSnapshot.val().employee.firstName,
-					lastName: childSnapshot.val().employee.lastName,
-					middleName: childSnapshot.val().employee.middleName,
-					age: childSnapshot.val().employee.age,
-					designation: childSnapshot.val().employee.designation,
-					salary: childSnapshot.val().employee.salary
+					empNumber: childSnapshot.val().member.empNumber,
+					firstName: childSnapshot.val().member.firstName,
+					lastName: childSnapshot.val().member.lastName,
+					middleName: childSnapshot.val().member.middleName,
+					age: childSnapshot.val().member.age,
+					salary: childSnapshot.val().member.salary,
+					designation: childSnapshot.val().member.designation
 				}
-				employees.push(employee);
-				AppActions.receiveEmployee(employee);
+				members.push(member);
+				AppActions.receiveMembers(members);
 			});
 		});
 	}

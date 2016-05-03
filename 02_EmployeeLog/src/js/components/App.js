@@ -5,7 +5,7 @@ var AddForm = require('./AddForm.js');
 
 function getAppState(){
 	return {
-		employees: AppStore.getEmployees()
+			members: AppStore.getMembers()
 	}
 }
 
@@ -23,7 +23,7 @@ var App = React.createClass({
 	},
 
 	render: function(){
-		console.log(this.state.employees)
+		console.log(this.state.members);
 		return(
 			<div>
 				<AddForm/>
