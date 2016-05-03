@@ -11,7 +11,6 @@ function getAppState(){
 			membersToEdit: AppStore.getMemberToEdit()
 	}
 }
-
 var App = React.createClass({
 	getInitialState: function(){
 		return getAppState();
@@ -34,7 +33,7 @@ var App = React.createClass({
 		}
 		return(
 			<div>
-				<section id="employeeLog" className="container">
+				<section id="employeeLog">
 						<MemberList members= {this.state.members} />
 				</section>
 				<section id="AddSection">

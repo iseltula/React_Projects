@@ -7,7 +7,7 @@ var Member = require('./Member.js');
 var MemberList = React.createClass({
 	render: function(){
 		return(
-      <div>
+      <div className="container">
           <h3>Employee Log</h3>
           <table className="table table-hover">
             <thead>

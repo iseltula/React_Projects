@@ -12,7 +12,7 @@ var EditForm = React.createClass({
           <div className= "form-group">
             <label className="control-label col-md-4">Employee Number</label>
             <div className="col-md-5">
-              <input type="text" ref="empNumber" className ="form-control" onChange = {this.handleChange.bind(this, 'empNumber')} value={this.props.membersToEdit.empNumber}/>
+              <input required type="number" ref="empNumber" className ="form-control" onChange = {this.handleChange.bind(this, 'empNumber')} value={this.props.membersToEdit.empNumber}/>
             </div>
           </div>
 
@@ -65,7 +65,8 @@ var EditForm = React.createClass({
             </div>
           </div>
             <a className= "btn btn-success btn-md" onClick={this.handleSubmit}> Update</a>
-						<a className="btn btn-md danger" onClick={this.handleRemove} >Remove</a>
+						<a className="btn btn-md btn-danger" onClick={this.handleRemove} >Remove</a>
+						<a className="btn btn-md btn-primary" onClick={this.handleCancel} >Cancel</a>
         </form>
       </div>
 		);
@@ -92,8 +93,10 @@ var EditForm = React.createClass({
       salary: this.refs.salary.value.trim()
     }
     AppActions.updateMember(member);
-		
-  }
+  },
+	handleCancel: function(){
+		AppActions.cancelEdit();
+	}
 });
 
 module.exports = EditForm;

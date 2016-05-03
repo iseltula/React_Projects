@@ -31,6 +31,11 @@ var AppActions = {
 			actionType: AppConstants.UPDATE_MEMBER,
 			member: member
 		});
+	},
+	cancelEdit:function(){
+		AppDispatcher.handleViewAction({
+			actionType: AppConstants.CANCEL_EDIT,
+		});
 	}
 }
 

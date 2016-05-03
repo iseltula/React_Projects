@@ -1,18 +1,21 @@
 var React = require('react');
 var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
-
+var message="";
 
 var AddForm = React.createClass({
 	render: function(){
 		return(
       <div>
         <h3>Add Employee</h3>
+					<p className="alert alert-success" role="alert">
+					{message}
+				</p>
         <form className="form-horizontal" name="LogForm">
           <div className= "form-group">
             <label className="control-label col-md-4">Employee Number</label>
             <div className="col-md-5">
-              <input type="text" ref="empNumber" className ="form-control"/>
+              <input type="number" ref="empNumber" className ="form-control"/>
             </div>
           </div>
 
@@ -81,6 +84,7 @@ var AddForm = React.createClass({
       salary: this.refs.salary.value.trim()
     }
     AppActions.saveMember(member);
+		message="Great! You added a new Employee.";
   }
 });
 

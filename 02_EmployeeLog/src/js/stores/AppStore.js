@@ -22,7 +22,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
 	removeMember: function(memberId){
 		var index = _members.findIndex(x=> x.id === memberId);
 		_members.splice(index, 1);
-		_members='';
 	},
 	setMemberToEdit: function(member){
 		_member_to_edit = member;
@@ -37,6 +36,9 @@ var AppStore = assign({}, EventEmitter.prototype, {
 				_members.push(member);
 			}
 		}
+		_member_to_edit='';
+	},
+	cancelEdit : function(){
 		_member_to_edit='';
 	},
 	emitChange: function(){
@@ -103,6 +105,15 @@ AppDispatcher.register(function(payload){
 
 			//API Update
 			AppAPI.updateMember(action.member);
+
+			//Emit change
+			AppStore.emitChange();
+			break;
+	case AppConstants.CANCEL_EDIT:
+			console.log('Cancel Action...');
+
+			//Cancel Action
+			AppStore.cancelEdit(action);
 
 			//Emit change
 			AppStore.emitChange();

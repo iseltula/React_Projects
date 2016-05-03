@@ -20033,6 +20033,11 @@ var AppActions = {
 			actionType: AppConstants.UPDATE_MEMBER,
 			member: member
 		});
+	},
+	cancelEdit:function(){
+		AppDispatcher.handleViewAction({
+			actionType: AppConstants.CANCEL_EDIT,
+		});
 	}
 }
 
@@ -20041,18 +20046,21 @@ module.exports = AppActions;
 var React = require('react');
 var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
-
+var message="";
 
 var AddForm = React.createClass({displayName: "AddForm",
 	render: function(){
 		return(
       React.createElement("div", null, 
         React.createElement("h3", null, "Add Employee"), 
+					React.createElement("p", {className: "alert alert-success", role: "alert"}, 
+					message
+				), 
         React.createElement("form", {className: "form-horizontal", name: "LogForm"}, 
           React.createElement("div", {className: "form-group"}, 
             React.createElement("label", {className: "control-label col-md-4"}, "Employee Number"), 
             React.createElement("div", {className: "col-md-5"}, 
-              React.createElement("input", {type: "text", ref: "empNumber", className: "form-control"})
+              React.createElement("input", {type: "number", ref: "empNumber", className: "form-control"})
             )
           ), 
 
@@ -20121,6 +20129,7 @@ var AddForm = React.createClass({displayName: "AddForm",
       salary: this.refs.salary.value.trim()
     }
     AppActions.saveMember(member);
+		message="Great! You added a new Employee.";
   }
 });
 
@@ -20139,7 +20148,6 @@ function getAppState(){
 			membersToEdit: AppStore.getMemberToEdit()
 	}
 }
-
 var App = React.createClass({displayName: "App",
 	getInitialState: function(){
 		return getAppState();
@@ -20162,7 +20170,7 @@ var App = React.createClass({displayName: "App",
 		}
 		return(
 			React.createElement("div", null, 
-				React.createElement("section", {id: "employeeLog", className: "container"}, 
+				React.createElement("section", {id: "employeeLog"}, 
 						React.createElement(MemberList, {members: this.state.members})
 				), 
 				React.createElement("section", {id: "AddSection"}, 
@@ -20195,7 +20203,7 @@ var EditForm = React.createClass({displayName: "EditForm",
           React.createElement("div", {className: "form-group"}, 
             React.createElement("label", {className: "control-label col-md-4"}, "Employee Number"), 
             React.createElement("div", {className: "col-md-5"}, 
-              React.createElement("input", {type: "text", ref: "empNumber", className: "form-control", onChange: this.handleChange.bind(this, 'empNumber'), value: this.props.membersToEdit.empNumber})
+              React.createElement("input", {required: true, type: "number", ref: "empNumber", className: "form-control", onChange: this.handleChange.bind(this, 'empNumber'), value: this.props.membersToEdit.empNumber})
             )
           ), 
 
@@ -20248,7 +20256,8 @@ var EditForm = React.createClass({displayName: "EditForm",
             )
           ), 
             React.createElement("a", {className: "btn btn-success btn-md", onClick: this.handleSubmit}, " Update"), 
-						React.createElement("a", {className: "btn btn-md danger", onClick: this.handleRemove}, "Remove")
+						React.createElement("a", {className: "btn btn-md btn-danger", onClick: this.handleRemove}, "Remove"), 
+						React.createElement("a", {className: "btn btn-md btn-primary", onClick: this.handleCancel}, "Cancel")
         )
       )
 		);
@@ -20275,8 +20284,10 @@ var EditForm = React.createClass({displayName: "EditForm",
       salary: this.refs.salary.value.trim()
     }
     AppActions.updateMember(member);
-		
-  }
+  },
+	handleCancel: function(){
+		AppActions.cancelEdit();
+	}
 });
 
 module.exports = EditForm;
@@ -20317,7 +20328,7 @@ var Member = require('./Member.js');
 var MemberList = React.createClass({displayName: "MemberList",
 	render: function(){
 		return(
-      React.createElement("div", null, 
+      React.createElement("div", {className: "container"}, 
           React.createElement("h3", null, "Employee Log"), 
           React.createElement("table", {className: "table table-hover"}, 
             React.createElement("thead", null, 
@@ -20354,7 +20365,8 @@ module.exports = {
 	RECEIVE_MEMBERS: 'RECEIVE_MEMBERS',
 	REMOVE_MEMBER: 'REMOVE_MEMBER',
 	EDIT_MEMBER: 'EDIT_MEMBER',
-	UPDATE_MEMBER: 'UPDATE_MEMBER'
+	UPDATE_MEMBER: 'UPDATE_MEMBER',
+	CANCEL_EDIT: 'CANCEL_EDIT'
 }
 },{}],172:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
@@ -20425,6 +20437,9 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		}
 		_member_to_edit='';
 	},
+	cancelEdit : function(){
+		_member_to_edit='';
+	},
 	emitChange: function(){
 		this.emit(CHANGE_EVENT);
 	},
@@ -20489,6 +20504,15 @@ AppDispatcher.register(function(payload){
 
 			//API Update
 			AppAPI.updateMember(action.member);
+
+			//Emit change
+			AppStore.emitChange();
+			break;
+	case AppConstants.CANCEL_EDIT:
+			console.log('Cancel Action...');
+
+			//Cancel Action
+			AppStore.cancelEdit(action);
 
 			//Emit change
 			AppStore.emitChange();

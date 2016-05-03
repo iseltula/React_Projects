@@ -43,6 +43,12 @@ h2 {
 	background-color: #019924;
 }
 
+.alert, .alert-success{
+	background: none;
+	border:none;
+	font-weight: bold;
+}
+
 #selectionButton, button {
 	text-align: center;
 	}
