@@ -20015,11 +20015,29 @@ var AppActions = {
 			actionType: AppConstants.RECEIVE_MEMBERS,
 			members:members
 		});
+	},
+	removeMember:function(memberId){
+			AppDispatcher.handleViewAction({
+				actionType: AppConstants.REMOVE_MEMBER,
+				memberId: memberId
+			});
+		},
+	editMember:function(member){
+		AppDispatcher.handleViewAction({
+			actionType: AppConstants.EDIT_MEMBER,
+			member: member
+		});
+	},
+	updateMember:function(member){
+		AppDispatcher.handleViewAction({
+			actionType: AppConstants.UPDATE_MEMBER,
+			member: member
+		});
 	}
 }
 
 module.exports = AppActions;
-},{"../constants/AppConstants":168,"../dispatcher/AppDispatcher":169}],166:[function(require,module,exports){
+},{"../constants/AppConstants":171,"../dispatcher/AppDispatcher":172}],166:[function(require,module,exports){
 var React = require('react');
 var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
@@ -20028,9 +20046,9 @@ var AppStore = require('../stores/AppStore');
 var AddForm = React.createClass({displayName: "AddForm",
 	render: function(){
 		return(
-      React.createElement("div", {id: "AddSection"}, 
+      React.createElement("div", null, 
         React.createElement("h3", null, "Add Employee"), 
-        React.createElement("form", {className: "form-horizontal", name: "LogForm", onSubmit: this.handleSubmit}, 
+        React.createElement("form", {className: "form-horizontal", name: "LogForm"}, 
           React.createElement("div", {className: "form-group"}, 
             React.createElement("label", {className: "control-label col-md-4"}, "Employee Number"), 
             React.createElement("div", {className: "col-md-5"}, 
@@ -20083,10 +20101,10 @@ var AddForm = React.createClass({displayName: "AddForm",
           React.createElement("div", {className: "form-group"}, 
             React.createElement("label", {className: "control-label col-md-4"}, "Salary"), 
             React.createElement("div", {className: "col-md-5"}, 
-              React.createElement("input", {type: "text", ref: "salary", className: "form-control"})
+              React.createElement("input", {type: "number", ref: "salary", className: "form-control"})
             )
           ), 
-          React.createElement("button", {type: "submit", className: "btn btn-success btn-md"}, " Submit")
+          React.createElement("a", {className: "btn btn-success btn-md", onClick: this.handleSubmit}, " Submit")
         )
       )
 		);
@@ -20107,15 +20125,18 @@ var AddForm = React.createClass({displayName: "AddForm",
 });
 
 module.exports = AddForm;
-},{"../actions/AppActions":165,"../stores/AppStore":171,"react":164}],167:[function(require,module,exports){
+},{"../actions/AppActions":165,"../stores/AppStore":174,"react":164}],167:[function(require,module,exports){
 var React = require('react');
 var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
 var AddForm = require('./AddForm.js');
+var MemberList= require('./MemberList.js');
+var EditForm = require('./EditForm.js');
 
 function getAppState(){
 	return {
-			members: AppStore.getMembers()
+			members: AppStore.getMembers(),
+			membersToEdit: AppStore.getMemberToEdit()
 	}
 }
 
@@ -20133,10 +20154,21 @@ var App = React.createClass({displayName: "App",
 	},
 
 	render: function(){
-		console.log(this.state.members);
+		if(this.state.membersToEdit == ''){
+			var form = React.createElement(AddForm, null)
+		}
+		else{
+			var form = React.createElement(EditForm, {membersToEdit: this.state.membersToEdit})
+		}
 		return(
 			React.createElement("div", null, 
-				React.createElement(AddForm, null)
+				React.createElement("section", {id: "employeeLog", className: "container"}, 
+						React.createElement(MemberList, {members: this.state.members})
+				), 
+				React.createElement("section", {id: "AddSection"}, 
+					form
+				)
+
 			)
 		);
 	},
@@ -20148,12 +20180,183 @@ var App = React.createClass({displayName: "App",
 });
 
 module.exports = App;
-},{"../actions/AppActions":165,"../stores/AppStore":171,"./AddForm.js":166,"react":164}],168:[function(require,module,exports){
+},{"../actions/AppActions":165,"../stores/AppStore":174,"./AddForm.js":166,"./EditForm.js":168,"./MemberList.js":170,"react":164}],168:[function(require,module,exports){
+var React = require('react');
+var AppActions = require('../actions/AppActions');
+var AppStore = require('../stores/AppStore');
+
+
+var EditForm = React.createClass({displayName: "EditForm",
+	render: function(){
+		return(
+      React.createElement("div", null, 
+        React.createElement("h3", null, "Edit Employee"), 
+        React.createElement("form", {className: "form-horizontal", name: "LogForm"}, 
+          React.createElement("div", {className: "form-group"}, 
+            React.createElement("label", {className: "control-label col-md-4"}, "Employee Number"), 
+            React.createElement("div", {className: "col-md-5"}, 
+              React.createElement("input", {type: "text", ref: "empNumber", className: "form-control", onChange: this.handleChange.bind(this, 'empNumber'), value: this.props.membersToEdit.empNumber})
+            )
+          ), 
+
+          React.createElement("div", {className: "form-group "}, 
+            React.createElement("label", {className: "control-label col-md-4"}, "First Name"), 
+            React.createElement("div", {className: "col-md-5"}, 
+              React.createElement("input", {type: "text", ref: "firstName", className: "form-control", onChange: this.handleChange.bind(this, 'firstName'), value: this.props.membersToEdit.firstName})
+            )
+          ), 
+
+          React.createElement("div", {className: "form-group "}, 
+            React.createElement("label", {className: "control-label col-md-4"}, "Last Name"), 
+            React.createElement("div", {className: "col-md-5"}, 
+              React.createElement("input", {type: "text", ref: "lastName", className: "form-control", onChange: this.handleChange.bind(this, 'lastName'), value: this.props.membersToEdit.lastName})
+            )
+          ), 
+
+          React.createElement("div", {className: "form-group "}, 
+            React.createElement("label", {className: "control-label col-md-4 "}, "Middle Name"), 
+            React.createElement("div", {className: "col-md-5"}, 
+              React.createElement("input", {type: "text", ref: "middleName", className: "form-control", onChange: this.handleChange.bind(this, 'middleName'), value: this.props.membersToEdit.middleName})
+            )
+          ), 
+
+          React.createElement("div", {className: "form-group "}, 
+            React.createElement("label", {className: "control-label col-md-4"}, "Age"), 
+            React.createElement("div", {className: "col-md-5"}, 
+              React.createElement("input", {type: "text", ref: "age", className: "form-control", onChange: this.handleChange.bind(this, 'age'), value: this.props.membersToEdit.age})
+            )
+          ), 
+
+          React.createElement("div", {className: "form-group"}, 
+            React.createElement("label", {className: "control-label col-md-4"}, "Designation"), 
+              React.createElement("div", {className: "col-md-5"}, 
+                React.createElement("select", {className: "form-control", ref: "designation", onChange: this.handleChange.bind(this, 'designation'), value: this.props.membersToEdit.designation}, 
+                  React.createElement("option", null, "Senior Manager"), 
+                  React.createElement("option", null, "Manager"), 
+                  React.createElement("option", null, "Assistant Manager"), 
+                  React.createElement("option", null, "Lead"), 
+                  React.createElement("option", null, "Senior Consultant"), 
+                  React.createElement("option", null, "Consultant")
+                )
+              )
+         ), 
+
+          React.createElement("div", {className: "form-group"}, 
+            React.createElement("label", {className: "control-label col-md-4"}, "Salary"), 
+            React.createElement("div", {className: "col-md-5"}, 
+              React.createElement("input", {type: "text", ref: "salary", className: "form-control", onChange: this.handleChange.bind(this, 'salary'), value: this.props.membersToEdit.salary})
+            )
+          ), 
+            React.createElement("a", {className: "btn btn-success btn-md", onClick: this.handleSubmit}, " Update"), 
+						React.createElement("a", {className: "btn btn-md danger", onClick: this.handleRemove}, "Remove")
+        )
+      )
+		);
+	},
+	handleRemove: function(){
+			AppActions.removeMember(this.props.membersToEdit.id);
+	},
+	handleChange: function(fieldName, event){
+    var newState = event.target.value;
+    var selected = this.state.selected;
+    selected.name = newState;
+    this.setState({selected: selected});
+  },
+  handleSubmit:function(e){
+    e.preventDefault();
+    var member = {
+			id: this.props.membersToEdit.id,
+      empNumber: this.refs.empNumber.value.trim(),
+      firstName: this.refs.firstName.value.trim(),
+      lastName: this.refs.lastName.value.trim(),
+      middleName: this.refs.middleName.value.trim(),
+      age: this.refs.age.value.trim(),
+      designation: this.refs.designation.value.trim(),
+      salary: this.refs.salary.value.trim()
+    }
+    AppActions.updateMember(member);
+		
+  }
+});
+
+module.exports = EditForm;
+},{"../actions/AppActions":165,"../stores/AppStore":174,"react":164}],169:[function(require,module,exports){
+var React = require('react');
+var AppActions = require('../actions/AppActions');
+var AppStore = require('../stores/AppStore');
+
+
+
+var Member = React.createClass({displayName: "Member",
+	render: function(){
+		return(
+      React.createElement("tr", {onClick: this.handleEdit.bind(this, this.props.member)}, 
+          React.createElement("td", null, this.props.member.empNumber), 
+          React.createElement("td", null, this.props.member.firstName), 
+          React.createElement("td", null, this.props.member.lastName), 
+          React.createElement("td", null, this.props.member.middleName), 
+          React.createElement("td", null, this.props.member.age), 
+          React.createElement("td", null, this.props.member.designation), 
+          React.createElement("td", null, this.props.member.salary)					
+      )
+		);
+	},
+	handleEdit: function(i,j){
+		AppActions.editMember(i);
+	}
+});
+
+module.exports = Member;
+},{"../actions/AppActions":165,"../stores/AppStore":174,"react":164}],170:[function(require,module,exports){
+var React = require('react');
+var AppActions = require('../actions/AppActions');
+var AppStore = require('../stores/AppStore');
+var Member = require('./Member.js');
+
+
+var MemberList = React.createClass({displayName: "MemberList",
+	render: function(){
+		return(
+      React.createElement("div", null, 
+          React.createElement("h3", null, "Employee Log"), 
+          React.createElement("table", {className: "table table-hover"}, 
+            React.createElement("thead", null, 
+              React.createElement("tr", null, 
+                React.createElement("th", null, "Employee Number"), 
+                React.createElement("th", null, "First Name"), 
+                React.createElement("th", null, "Last Name"), 
+                React.createElement("th", null, "Middle Name"), 
+                React.createElement("th", null, " Age"), 
+                React.createElement("th", null, "Designation"), 
+                React.createElement("th", null, "Salary")
+              )
+            ), 
+            React.createElement("tbody", null, 
+              
+                  this.props.members.map(function(member, index){
+                    return(
+                      React.createElement(Member, {member: member, key: index})
+                    )
+                  })
+              
+            )
+          )
+
+      )
+		);
+	}
+});
+
+module.exports = MemberList;
+},{"../actions/AppActions":165,"../stores/AppStore":174,"./Member.js":169,"react":164}],171:[function(require,module,exports){
 module.exports = {
 	SAVE_MEMBER: 'SAVE_MEMBER',
-	RECEIVE_MEMBERS: 'RECEIVE_MEMBERS'
+	RECEIVE_MEMBERS: 'RECEIVE_MEMBERS',
+	REMOVE_MEMBER: 'REMOVE_MEMBER',
+	EDIT_MEMBER: 'EDIT_MEMBER',
+	UPDATE_MEMBER: 'UPDATE_MEMBER'
 }
-},{}],169:[function(require,module,exports){
+},{}],172:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
 var assign = require('object-assign');
 
@@ -20169,7 +20372,7 @@ var AppDispatcher = assign(new Dispatcher(),{
 
 module.exports = AppDispatcher;
 
-},{"flux":4,"object-assign":7}],170:[function(require,module,exports){
+},{"flux":4,"object-assign":7}],173:[function(require,module,exports){
 var App = require('./components/App');
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -20181,7 +20384,7 @@ ReactDOM.render(
 	React.createElement(App, null),
 	document.getElementById('app')
 );
-},{"./components/App":167,"./utils/appAPI.js":173,"react":164,"react-dom":8}],171:[function(require,module,exports){
+},{"./components/App":167,"./utils/appAPI.js":176,"react":164,"react-dom":8}],174:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
 var EventEmitter = require('events').EventEmitter;
@@ -20191,16 +20394,36 @@ var AppAPI = require('../utils/AppAPI.js');
 var CHANGE_EVENT = 'change';
 
 var _members = [];
+var _member_to_edit = '';
 
 var AppStore = assign({}, EventEmitter.prototype, {
 	saveMember: function(member){
 		_members.push(member);
 	},
 	getMembers: function(){
-	return _members;
-	},	
+		return _members;
+	},
 	setMembers: function(members){
 		_members = members
+	},
+	removeMember: function(memberId){
+		var index = _members.findIndex(x=> x.id === memberId);
+		_members.splice(index, 1);
+	},
+	setMemberToEdit: function(member){
+		_member_to_edit = member;
+	},
+	getMemberToEdit: function(){
+		return _member_to_edit;
+	},
+	updateMember : function(member){
+		for(i=0; i <_members.length; i++){
+			if(_members[i].id == member.id){
+				_members.splice(i,1);
+				_members.push(member);
+			}
+		}
+		_member_to_edit='';
 	},
 	emitChange: function(){
 		this.emit(CHANGE_EVENT);
@@ -20238,13 +20461,45 @@ AppDispatcher.register(function(payload){
 			//Emit change
 			AppStore.emitChange();
 			break;
+		case AppConstants.REMOVE_MEMBER:
+			console.log('Removing Member...');
+
+			//Store Remove
+			AppStore.removeMember(action.memberId);
+
+			//API Remove
+			AppAPI.removeMember(action.memberId);
+
+			//Emit change
+			AppStore.emitChange();
+			break;
+
+	case AppConstants.EDIT_MEMBER:
+			//Store Remove
+			AppStore.setMemberToEdit(action.member);
+
+			//Emit change
+			AppStore.emitChange();
+			break;
+	case AppConstants.UPDATE_MEMBER:
+			console.log('Updating Member...');
+
+			//Store Update
+			AppStore.updateMember(action.member);
+
+			//API Update
+			AppAPI.updateMember(action.member);
+
+			//Emit change
+			AppStore.emitChange();
+			break;
 	}
 
 	return true;
 });
 
 module.exports = AppStore;
-},{"../constants/AppConstants":168,"../dispatcher/AppDispatcher":169,"../utils/AppAPI.js":172,"events":1,"object-assign":7}],172:[function(require,module,exports){
+},{"../constants/AppConstants":171,"../dispatcher/AppDispatcher":172,"../utils/AppAPI.js":175,"events":1,"object-assign":7}],175:[function(require,module,exports){
 var Firebase = require('firebase');
 var AppActions = require('../actions/AppActions');
 
@@ -20274,9 +20529,28 @@ module.exports = {
 				AppActions.receiveMembers(members);
 			});
 		});
+	},
+	removeMember: function(memberId){
+		console.log(memberId);
+		this.firebaseRef = new Firebase('https://member-log.firebaseio.com/members/'+ memberId);
+		this.firebaseRef.remove();
+	},
+	updateMember: function(member){
+		var id = member.id;
+		var updatedMember = {
+			empNumber: member.empNumber,
+			firstName: member.firstName,
+			lastName: member.lastName,
+			middleName: member.middleName,
+			age: member.age,
+			salary: member.salary,
+			designation: member.designation
+		}
+		this.firebaseRef = new Firebase('https://member-log.firebaseio.com/members/'+ member.id +'/member');
+		this.firebaseRef.update(updatedMember);
 	}
 }
-},{"../actions/AppActions":165,"firebase":3}],173:[function(require,module,exports){
+},{"../actions/AppActions":165,"firebase":3}],176:[function(require,module,exports){
 var Firebase = require('firebase');
 var AppActions = require('../actions/AppActions');
 
@@ -20306,6 +20580,25 @@ module.exports = {
 				AppActions.receiveMembers(members);
 			});
 		});
+	},
+	removeMember: function(memberId){
+		console.log(memberId);
+		this.firebaseRef = new Firebase('https://member-log.firebaseio.com/members/'+ memberId);
+		this.firebaseRef.remove();
+	},
+	updateMember: function(member){
+		var id = member.id;
+		var updatedMember = {
+			empNumber: member.empNumber,
+			firstName: member.firstName,
+			lastName: member.lastName,
+			middleName: member.middleName,
+			age: member.age,
+			salary: member.salary,
+			designation: member.designation
+		}
+		this.firebaseRef = new Firebase('https://member-log.firebaseio.com/members/'+ member.id +'/member');
+		this.firebaseRef.update(updatedMember);
 	}
 }
-},{"../actions/AppActions":165,"firebase":3}]},{},[170]);
+},{"../actions/AppActions":165,"firebase":3}]},{},[173]);

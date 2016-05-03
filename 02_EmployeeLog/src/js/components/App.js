@@ -2,10 +2,13 @@ var React = require('react');
 var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
 var AddForm = require('./AddForm.js');
+var MemberList= require('./MemberList.js');
+var EditForm = require('./EditForm.js');
 
 function getAppState(){
 	return {
-			members: AppStore.getMembers()
+			members: AppStore.getMembers(),
+			membersToEdit: AppStore.getMemberToEdit()
 	}
 }
 
@@ -23,10 +26,21 @@ var App = React.createClass({
 	},
 
 	render: function(){
-		console.log(this.state.members);
+		if(this.state.membersToEdit == ''){
+			var form = <AddForm/>
+		}
+		else{
+			var form = <EditForm membersToEdit= {this.state.membersToEdit}/>
+		}
 		return(
 			<div>
-				<AddForm/>
+				<section id="employeeLog" className="container">
+						<MemberList members= {this.state.members} />
+				</section>
+				<section id="AddSection">
+					{form}
+				</section>
+
 			</div>
 		);
 	},

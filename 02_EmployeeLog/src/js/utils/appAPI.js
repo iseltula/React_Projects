@@ -27,5 +27,24 @@ module.exports = {
 				AppActions.receiveMembers(members);
 			});
 		});
+	},
+	removeMember: function(memberId){
+		console.log(memberId);
+		this.firebaseRef = new Firebase('https://member-log.firebaseio.com/members/'+ memberId);
+		this.firebaseRef.remove();
+	},
+	updateMember: function(member){
+		var id = member.id;
+		var updatedMember = {
+			empNumber: member.empNumber,
+			firstName: member.firstName,
+			lastName: member.lastName,
+			middleName: member.middleName,
+			age: member.age,
+			salary: member.salary,
+			designation: member.designation
+		}
+		this.firebaseRef = new Firebase('https://member-log.firebaseio.com/members/'+ member.id +'/member');
+		this.firebaseRef.update(updatedMember);
 	}
 }

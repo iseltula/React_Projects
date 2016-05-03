@@ -13,6 +13,24 @@ var AppActions = {
 			actionType: AppConstants.RECEIVE_MEMBERS,
 			members:members
 		});
+	},
+	removeMember:function(memberId){
+			AppDispatcher.handleViewAction({
+				actionType: AppConstants.REMOVE_MEMBER,
+				memberId: memberId
+			});
+		},
+	editMember:function(member){
+		AppDispatcher.handleViewAction({
+			actionType: AppConstants.EDIT_MEMBER,
+			member: member
+		});
+	},
+	updateMember:function(member){
+		AppDispatcher.handleViewAction({
+			actionType: AppConstants.UPDATE_MEMBER,
+			member: member
+		});
 	}
 }
 

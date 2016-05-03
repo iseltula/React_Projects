@@ -7,16 +7,37 @@ var AppAPI = require('../utils/AppAPI.js');
 var CHANGE_EVENT = 'change';
 
 var _members = [];
+var _member_to_edit = '';
 
 var AppStore = assign({}, EventEmitter.prototype, {
 	saveMember: function(member){
 		_members.push(member);
 	},
 	getMembers: function(){
-	return _members;
-	},	
+		return _members;
+	},
 	setMembers: function(members){
 		_members = members
+	},
+	removeMember: function(memberId){
+		var index = _members.findIndex(x=> x.id === memberId);
+		_members.splice(index, 1);
+		_members='';
+	},
+	setMemberToEdit: function(member){
+		_member_to_edit = member;
+	},
+	getMemberToEdit: function(){
+		return _member_to_edit;
+	},
+	updateMember : function(member){
+		for(i=0; i <_members.length; i++){
+			if(_members[i].id == member.id){
+				_members.splice(i,1);
+				_members.push(member);
+			}
+		}
+		_member_to_edit='';
 	},
 	emitChange: function(){
 		this.emit(CHANGE_EVENT);
@@ -50,6 +71,38 @@ AppDispatcher.register(function(payload){
 
 			//Store save
 			AppStore.setMembers(action.members);
+
+			//Emit change
+			AppStore.emitChange();
+			break;
+		case AppConstants.REMOVE_MEMBER:
+			console.log('Removing Member...');
+
+			//Store Remove
+			AppStore.removeMember(action.memberId);
+
+			//API Remove
+			AppAPI.removeMember(action.memberId);
+
+			//Emit change
+			AppStore.emitChange();
+			break;
+
+	case AppConstants.EDIT_MEMBER:
+			//Store Remove
+			AppStore.setMemberToEdit(action.member);
+
+			//Emit change
+			AppStore.emitChange();
+			break;
+	case AppConstants.UPDATE_MEMBER:
+			console.log('Updating Member...');
+
+			//Store Update
+			AppStore.updateMember(action.member);
+
+			//API Update
+			AppAPI.updateMember(action.member);
 
 			//Emit change
 			AppStore.emitChange();
