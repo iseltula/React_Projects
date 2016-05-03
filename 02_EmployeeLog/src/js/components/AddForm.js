@@ -43,7 +43,7 @@ var AddForm = React.createClass({
           <div className= "form-group ">
             <label className="control-label col-md-4">Age</label>
             <div className="col-md-5">
-              <input type="text" ref="age" className ="form-control"/>
+              <input type="number" ref="age" className ="form-control" />
             </div>
           </div>
 
@@ -83,9 +83,18 @@ var AddForm = React.createClass({
       designation: this.refs.designation.value.trim(),
       salary: this.refs.salary.value.trim()
     }
-    AppActions.saveMember(member);
-		message="Great! You added a new Employee.";
-  }
+			this.validationForm(member);
+
+
+  },
+	validationForm : function(member){
+		if(member.empNumber==""){
+			message="Great";
+		}
+		else{
+			AppActions.saveMember(member);
+		}
+	}
 });
 
 module.exports = AddForm;

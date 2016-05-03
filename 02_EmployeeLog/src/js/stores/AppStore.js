@@ -22,6 +22,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
 	removeMember: function(memberId){
 		var index = _members.findIndex(x=> x.id === memberId);
 		_members.splice(index, 1);
+		_member_to_edit='';
 	},
 	setMemberToEdit: function(member){
 		_member_to_edit = member;

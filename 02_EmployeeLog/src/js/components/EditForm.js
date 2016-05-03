@@ -40,7 +40,7 @@ var EditForm = React.createClass({
           <div className= "form-group ">
             <label className="control-label col-md-4">Age</label>
             <div className="col-md-5">
-              <input type="text" ref="age" className ="form-control" onChange = {this.handleChange.bind(this, 'age')} value={this.props.membersToEdit.age}/>
+              <input type="number" ref="age" className ="form-control" onChange = {this.handleChange.bind(this, 'age')} value={this.props.membersToEdit.age}/>
             </div>
           </div>
 
@@ -61,7 +61,7 @@ var EditForm = React.createClass({
           <div className= "form-group">
             <label className="control-label col-md-4">Salary</label>
             <div className="col-md-5">
-              <input type="text" ref="salary" className = "form-control" onChange = {this.handleChange.bind(this, 'salary')} value={this.props.membersToEdit.salary}/>
+              <input type="number" ref="salary" className = "form-control" onChange = {this.handleChange.bind(this, 'salary')} value={this.props.membersToEdit.salary}/>
             </div>
           </div>
             <a className= "btn btn-success btn-md" onClick={this.handleSubmit}> Update</a>

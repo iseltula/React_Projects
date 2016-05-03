@@ -20088,7 +20088,7 @@ var AddForm = React.createClass({displayName: "AddForm",
           React.createElement("div", {className: "form-group "}, 
             React.createElement("label", {className: "control-label col-md-4"}, "Age"), 
             React.createElement("div", {className: "col-md-5"}, 
-              React.createElement("input", {type: "text", ref: "age", className: "form-control"})
+              React.createElement("input", {type: "number", ref: "age", className: "form-control"})
             )
           ), 
 
@@ -20128,9 +20128,18 @@ var AddForm = React.createClass({displayName: "AddForm",
       designation: this.refs.designation.value.trim(),
       salary: this.refs.salary.value.trim()
     }
-    AppActions.saveMember(member);
-		message="Great! You added a new Employee.";
-  }
+			this.validationForm(member);
+
+
+  },
+	validationForm : function(member){
+		if(member.empNumber==""){
+			message="Great";
+		}
+		else{
+			AppActions.saveMember(member);
+		}
+	}
 });
 
 module.exports = AddForm;
@@ -20231,7 +20240,7 @@ var EditForm = React.createClass({displayName: "EditForm",
           React.createElement("div", {className: "form-group "}, 
             React.createElement("label", {className: "control-label col-md-4"}, "Age"), 
             React.createElement("div", {className: "col-md-5"}, 
-              React.createElement("input", {type: "text", ref: "age", className: "form-control", onChange: this.handleChange.bind(this, 'age'), value: this.props.membersToEdit.age})
+              React.createElement("input", {type: "number", ref: "age", className: "form-control", onChange: this.handleChange.bind(this, 'age'), value: this.props.membersToEdit.age})
             )
           ), 
 
@@ -20252,7 +20261,7 @@ var EditForm = React.createClass({displayName: "EditForm",
           React.createElement("div", {className: "form-group"}, 
             React.createElement("label", {className: "control-label col-md-4"}, "Salary"), 
             React.createElement("div", {className: "col-md-5"}, 
-              React.createElement("input", {type: "text", ref: "salary", className: "form-control", onChange: this.handleChange.bind(this, 'salary'), value: this.props.membersToEdit.salary})
+              React.createElement("input", {type: "number", ref: "salary", className: "form-control", onChange: this.handleChange.bind(this, 'salary'), value: this.props.membersToEdit.salary})
             )
           ), 
             React.createElement("a", {className: "btn btn-success btn-md", onClick: this.handleSubmit}, " Update"), 
@@ -20421,6 +20430,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
 	removeMember: function(memberId){
 		var index = _members.findIndex(x=> x.id === memberId);
 		_members.splice(index, 1);
+		_member_to_edit='';
 	},
 	setMemberToEdit: function(member){
 		_member_to_edit = member;
