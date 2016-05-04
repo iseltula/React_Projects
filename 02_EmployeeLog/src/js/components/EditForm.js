@@ -64,9 +64,9 @@ var EditForm = React.createClass({
               <input type="number" ref="salary" className = "form-control" onChange = {this.handleChange.bind(this, 'salary')} value={this.props.membersToEdit.salary}/>
             </div>
           </div>
-            <a className= "btn btn-success btn-md" onClick={this.handleSubmit}> Update</a>
-						<a className="btn btn-md btn-danger" onClick={this.handleRemove} >Remove</a>
-						<a className="btn btn-md btn-primary" onClick={this.handleCancel} >Cancel</a>
+            <a className= "btn btn-success btn-md" onClick={this.handleSubmit}> Update  <i className="fa fa-pencil"></i></a>
+						<a className="btn btn-md btn-danger" onClick={this.handleRemove} >Remove <i className="fa fa-trash"></i></a>
+						<a className="btn btn-md btn-primary" onClick={this.handleCancel} >Cancel <i className="fa fa-times"></i></a>
         </form>
       </div>
 		);

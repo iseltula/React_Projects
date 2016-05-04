@@ -67,7 +67,7 @@ var AddForm = React.createClass({
               <input type="number" ref="salary" className = "form-control"/>
             </div>
           </div>
-          <a className= "btn btn-success btn-md" onClick={this.handleSubmit}> Submit</a>
+          <a className= "btn btn-success btn-md" onClick={this.handleSubmit}> Submit <i className="fa fa-plus" aria-hidden="true"></i></a>
         </form>
       </div>
 		);
@@ -83,16 +83,58 @@ var AddForm = React.createClass({
       designation: this.refs.designation.value.trim(),
       salary: this.refs.salary.value.trim()
     }
-			this.validationForm(member);
+	this.validationForm(member);
 
 
   },
 	validationForm : function(member){
-		if(member.empNumber==""){
-			message="Great";
+		var letters = /^[A-Za-z]+$/;
+		if(member.empNumber!=="" && member.firstName!=="" && member.lastName!=="" && member.age!=="" && member.salary!==""){
+			if(member.age >"0"){
+				if(member.middleName.match(letters) && member.firstName.match(letters) && member.lastName.match(letters)){
+							if (member.designation == "Senior Manager" && member.salary < "100000" || member.salary > "130000") {
+								AppActions.cancelEdit();
+				 				message="Senior Manager Salary must be between $100,000 and $130,000";
+							}
+							if (member.designation == "Manager" && member.salary < "90000" || member.salary > "99999") {
+								AppActions.cancelEdit();
+								message="Manager Salary must be between $90,000 and $99,999";
+							}
+							if (member.designation == "Assistant Manager" && member.salary < "80000" || member.salary > '89999') {
+								AppActions.cancelEdit();
+								message="Assistant Manager Salary must be between $80,000 and $89,999";
+							}
+							if (member.designation == "Lead" && (member.salary < "60000" || member.salary > "79999")) {
+								AppActions.cancelEdit();
+								message="Lead  Salary must be between $60,000 and $79,999";
+							}
+							if (member.designation == "Senior Consultant" && (member.salary < "50000" || member.salary > "59000")) {
+								AppActions.cancelEdit();
+								message="Senior Consultant Salary must be between $50,000 and $59,999";
+							}
+							if (member.designation == "Consultant" && (member.salary < "40000" && member.salary > "49000")) {
+								AppActions.cancelEdit();
+								message="Consultant Salary must be between $40,000 and $49,999";
+							}  else {
+								message = "New Employee Added";
+								AppActions.saveMember(member);
+
+								  		}
+									}
+				else{
+					AppActions.cancelEdit();
+					message = "There is a number in a text field";
+				}
+			}
+			else{
+				AppActions.cancelEdit();
+				message="Your age and salary are wrong";
+			}
 		}
 		else{
-			AppActions.saveMember(member);
+			AppActions.cancelEdit();
+			message= "You are missing some fields";
+
 		}
 	}
 });
