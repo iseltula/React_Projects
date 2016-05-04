@@ -118,7 +118,6 @@ var AddForm = React.createClass({
 							}  else {
 								message = "New Employee Added";
 								AppActions.saveMember(member);
-
 								  		}
 									}
 				else{
