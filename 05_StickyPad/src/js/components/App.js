@@ -1,10 +1,12 @@
 var React = require('react');
 var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
+var AddNoteForm = require('./AddNoteForm.js');
+var NoteList = require('./NoteList');
 
 function getAppState(){
 	return {
-
+		notes: AppStore.getNotes()
 	}
 }
 
@@ -29,11 +31,11 @@ var App = React.createClass({
 						<div className="off-canvas position-left reveal-for-large" data-off-canvas data-position="left">
 							<div className="row column">
 								<br />
-								//ADD NOTE FORM
+							<AddNoteForm/>
 							</div>
 						</div>
 						<div className="off-canvas-content" data-off-canvas-content>
-						// NOTELIST
+							<NoteList notes = {this.state.notes} />
 						</div>
 					</div>
 				</div>

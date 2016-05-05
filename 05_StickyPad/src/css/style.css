@@ -1,0 +1,13 @@
+.note{
+  background: url("../images/note.png");
+  width:100%;
+  height: 250px;
+  position: relative;
+}
+
+.note p {
+  position:absolute;
+  top: 100px;
+  left: 30px;
+  font-weight: bold;
+}
