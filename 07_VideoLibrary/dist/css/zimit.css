@@ -1,4 +1,4 @@
-@import url("//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,700,400,600&.css");
+@import url("http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,700,400,600&.css");
 /**
  * Zimit.less
  *
@@ -19,7 +19,7 @@
  * @version 0.9.9
  * @author Jorge Garrido Oval, firezenk@gmail.com
  * @copyright 2012
- * @license MIT 
+ * @license MIT
  */
 html,
 body {
@@ -78,7 +78,7 @@ h6 {
 /* Paragraph;
 
 	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eu lorem eget nunc convallis congue. 
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eu lorem eget nunc convallis congue.
 		Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
 	</p>
 */
@@ -87,7 +87,7 @@ p {
   font-weight: 400;
 }
 /* Bolds: 'b' and 'strong' elements;
-	
+
 	<b>Sample with b</b>, <strong>Sample with strong</strong>
 */
 b,
@@ -108,7 +108,7 @@ time {
   font-style: italic;
 }
 /* Definitions and abbreviations;
-	
+
 	<dfn>Sample definition</dfn>, <abbr title="Abreviation Sample">AS</abbr>
 */
 dfn,
@@ -217,7 +217,7 @@ ol li {
 	<section>
 		<h2>Title</h2> <h6>Subttle</h6>
 		<hr/>
-	</section> 
+	</section>
 */
 section h2 {
   display: inline;
@@ -520,7 +520,7 @@ html,
 body {
   height: 100%;
 }
-/* Helper to fix elements; 
+/* Helper to fix elements;
 
 	<div class="fix">Fixed space</div>
 */
@@ -539,7 +539,7 @@ header {
   height: auto;
 }
 /* Main container for the documment, before than 'header' and aften than 'footer'
-	
+
 	<main>Documment content</main>
 	or
 	<div class="content">Documment content</div>
@@ -586,7 +586,7 @@ footer {
  * @copyright 2012
  * @license MIT
  */
-/* Separator element: 'hr'; 
+/* Separator element: 'hr';
 
 	<hr/>
 */
@@ -793,7 +793,7 @@ nav input[type="checkbox"]:checked ~ #menu a:hover {
 a {
   color: #aad1f8;
 }
-/* Styled buttons, also with icons; 
+/* Styled buttons, also with icons;
 
 	<button>Sample button</button>
 */
@@ -887,7 +887,7 @@ input[type="reset"]:hover {
   -moz-box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.25);
   box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.25);
 }
-/* Optional coloured styled buttons, also with icons; 
+/* Optional coloured styled buttons, also with icons;
 
 	<button class="btn-red">Sample button</button>
 	<button class="btn-blue">Sample button</button>
@@ -1167,7 +1167,7 @@ input[type="number"] {
   -moz-box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.25);
   box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.25);
 }
-/* Custom file upload element; 
+/* Custom file upload element;
 
 	<div class="upload">Upload<input type="file"/> <icon>upload</icon> </div>
 */
@@ -1229,7 +1229,7 @@ input[type="file"] {
             <option value="opel">Opel</option>
             <option value="audi">Audi</option>
         </select>
-        <icon>down</icon> 
+        <icon>down</icon>
     </div>
 */
 select {
@@ -1282,7 +1282,7 @@ select {
   box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.25);
 }
 /* Dedicated input to web search;
-	
+
 	<input type="text" class="search" placeholder="Search"/>
 */
 .search {
@@ -1300,7 +1300,7 @@ select {
 
 	<div class="datalist">
     	<input list="browsers"/>
-        
+
         <datalist id="browsers">
         	<option value="Internet Explorer">
           	<option value="Firefox">
@@ -1308,7 +1308,7 @@ select {
            	<option value="Opera">
        		<option value="Safari">
        	</datalist>
-        <icon>down</icon> 
+        <icon>down</icon>
     </div>
 */
 .datalist {
@@ -1350,7 +1350,7 @@ textarea {
   box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.25);
 }
 /* Round-cornered fieldset;
-	
+
 	<form>
         <fieldset>
           <legend>Personalia:</legend>
@@ -1371,7 +1371,7 @@ fieldset {
 }
 /* Keygen HTML5 component;
 
-	<keygen name="security"></keygen> 
+	<keygen name="security"></keygen>
 */
 keygen {
   border: 1px solid #979797;
@@ -1936,8 +1936,8 @@ breadcrumb li:last-of-type:after,
 	<panel class="c4">
     	<p class="title">Sample title</p>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-          Integer vulputate turpis a turpis consectetur euismod. 
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          Integer vulputate turpis a turpis consectetur euismod.
           Sed sit amet quam et eros dignissim euismod.
         </p>
     </panel>
@@ -1969,33 +1969,33 @@ panel p,
   color: #6c5a68;
   padding: 0 20px 0 20px;
 }
-/* This component implements tabs whith custom elements: 'tab-host' and 'tab'. 
+/* This component implements tabs whith custom elements: 'tab-host' and 'tab'.
    You also can usan 'div' instead 'tab-host' and 'tab';
 
 	<tab-host>
        <tab>
            <input type="radio" id="tab-1" name="tab-group-1" checked>
            <label for="tab-1">Tab One</label>
-           
+
            <div class="tab-content">
                content 1
-           </div> 
+           </div>
        </tab>
        <tab>
            <input type="radio" id="tab-2" name="tab-group-1">
            <label for="tab-2">Tab Two</label>
-           
+
            <div class="tab-content">
                content 2
-           </div> 
+           </div>
        </tab>
         <tab>
            <input type="radio" id="tab-3" name="tab-group-1">
            <label for="tab-3">Tab Three</label>
-         
+
            <div class="tab-content">
                content 3
-           </div> 
+           </div>
        </tab>
       </tab-host>
 */
@@ -2120,8 +2120,8 @@ tab-host .tab .tab-content,
 			<label for="ac-1">One</label>
 			<article>
 				<p>
-					En un lugar de la Mancha, de cuyo nombre no quiero acordarme, 
-					no ha mucho tiempo que vivía un hidalgo de los de lanza en astillero, 
+					En un lugar de la Mancha, de cuyo nombre no quiero acordarme,
+					no ha mucho tiempo que vivía un hidalgo de los de lanza en astillero,
 					adarga antigua, rocín flaco y galgo corredor.
 				</p>
             </article>
@@ -2131,8 +2131,8 @@ tab-host .tab .tab-content,
             <label for="ac-2">Two</label>
             <article>
             	<p>
-            		Una olla de algo más vaca que carnero, salpicón las más noches, 
-            		duelos y quebrantos los sábados, lantejas los viernes, algún palomino de añadidura los domingos, 
+            		Una olla de algo más vaca que carnero, salpicón las más noches,
+            		duelos y quebrantos los sábados, lantejas los viernes, algún palomino de añadidura los domingos,
             		consumían las tres partes de su hacienda.
             	</p>
             </article>
@@ -2142,7 +2142,7 @@ tab-host .tab .tab-content,
          	<label for="ac-3">Three</label>
             <article>
             	<p>
-					El resto della concluían sayo de velarte, calzas de velludo para las fiestas, 
+					El resto della concluían sayo de velarte, calzas de velludo para las fiestas,
 					con sus pantuflos de lo mesmo, y los días de entresemana se honraba con su vellorí de lo más fino.
             	</p>
             </article>
@@ -2586,9 +2586,9 @@ pagination .current,
           <a href="#close" class="close">&times;</a>
         </div>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-          Proin molestie, justo a fermentum placerat, nisi metus consectetur metus, 
-          vel aliquet massa neque sit amet ipsum. Vestibulum non dolor turpis. 
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          Proin molestie, justo a fermentum placerat, nisi metus consectetur metus,
+          vel aliquet massa neque sit amet ipsum. Vestibulum non dolor turpis.
           Fusce convallis odio vitae orci commodo consectetur.
         </p>
         <div class="commands">
@@ -2714,7 +2714,7 @@ modal .close:hover,
   background: -o-linear-gradient(top, #676767, #676767);
   background-color: #676767;
 }
-/* Custom 2 level dropdown component. 
+/* Custom 2 level dropdown component.
    Default is displayed on the right, but you can set to be deployed on the left using 'left' class on 'ul' element;
 
 	<ul class="dropdown">
@@ -3354,9 +3354,9 @@ carousel .active label:hover,
 
 	<div class="video">
       <iframe src="http://player.vimeo.com/video/4749536?badge=0" width="500" height="281" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen>
-      </iframe> 
+      </iframe>
       <p>
-      	<a href="http://vimeo.com/4749536">Alma</a> from 
+      	<a href="http://vimeo.com/4749536">Alma</a> from
       	<a href="http://vimeo.com/alma">Rodrigo Blaas</a> on <a href="http://vimeo.com">Vimeo</a>.
       </p>
     </div>
@@ -3425,16 +3425,16 @@ thumbnail .details h6,
 
 	<div class="audio-set">
      	<audio id="player" src="music/ambient.mp3" loop controlls></audio>
-            
-  		<button onclick="document.getElementById('player').play()" 
+
+  		<button onclick="document.getElementById('player').play()"
   			class="audio-play"><icon>play</icon></button>
-    	<button onclick="document.getElementById('player').pause()" 
+    	<button onclick="document.getElementById('player').pause()"
     		class="audio-pause"><icon>pause</icon></button>
- 		<button onclick="document.getElementById('player').mute=!document.getElementById('player').mute" 
+ 		<button onclick="document.getElementById('player').mute=!document.getElementById('player').mute"
  			class="audio-vdown"><icon>volumeoff</icon></button>
-  		<progress value="document.getElementById('player').currentTime()" 
+  		<progress value="document.getElementById('player').currentTime()"
   			class="audio-time" max="document.getElementById('player').duration"></progress>
-     	<button onclick="document.getElementById('player').volume-=0.1" 
+     	<button onclick="document.getElementById('player').volume-=0.1"
      		class="audio-vup"><icon>volumedown</icon></button>
 		<button onclick="document.getElementById('player').volume+=0.1"
      		class="audio-vdown"><icon>volumeup</icon></button>
@@ -3680,17 +3680,17 @@ main,
   .content {
     width: 1200px;
     /* webkit */
-  
+
     -webkit-animation-property: -webkit-width;
     -webkit-animation-property: -webkit-height;
     -webkit-transition-duration: 1s;
     /* moz */
-  
+
     -moz-animation-property: -moz-width;
     -moz-animation-property: -moz-height;
     -moz-transition-duration: 1s;
     /* opera */
-  
+
     -o-animation-property: -o-width;
     -o-animation-property: -o-height;
     -o-transition-duration: 1s;
@@ -4007,17 +4007,17 @@ main,
   .content {
     width: 300px;
     /* webkit */
-  
+
     -webkit-animation-property: -webkit-width;
     -webkit-animation-property: -webkit-height;
     -webkit-transition-duration: 1s;
     /* moz */
-  
+
     -moz-animation-property: -moz-width;
     -moz-animation-property: -moz-height;
     -moz-transition-duration: 1s;
     /* opera */
-  
+
     -o-animation-property: -o-width;
     -o-animation-property: -o-height;
     -o-transition-duration: 1s;
