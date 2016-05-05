@@ -8,7 +8,7 @@ var AddForm = React.createClass({
 		return(
       <div>
         <h3>Add Employee</h3>
-					<p className="alert alert-success" role="alert">
+					<p className="alert alert-danger" role="alert">
 					{message}
 				</p>
         <form className="form-horizontal" name="LogForm" id="ControlForm">

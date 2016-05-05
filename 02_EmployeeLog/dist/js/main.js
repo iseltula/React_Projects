@@ -20053,7 +20053,7 @@ var AddForm = React.createClass({displayName: "AddForm",
 		return(
       React.createElement("div", null, 
         React.createElement("h3", null, "Add Employee"), 
-					React.createElement("p", {className: "alert alert-success", role: "alert"}, 
+					React.createElement("p", {className: "alert alert-danger", role: "alert"}, 
 					message
 				), 
         React.createElement("form", {className: "form-horizontal", name: "LogForm", id: "ControlForm"}, 
@@ -20241,6 +20241,7 @@ module.exports = App;
 var React = require('react');
 var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
+var message="";
 
 
 var EditForm = React.createClass({displayName: "EditForm",
@@ -20248,6 +20249,9 @@ var EditForm = React.createClass({displayName: "EditForm",
 		return(
       React.createElement("div", null, 
         React.createElement("h3", null, "Edit Employee"), 
+					React.createElement("p", {className: "alert alert-danger", role: "alert", id: "message"}, 
+					message
+					), 
         React.createElement("form", {className: "form-horizontal", name: "LogForm"}, 
           React.createElement("div", {className: "form-group"}, 
             React.createElement("label", {className: "control-label col-md-4"}, "Employee Number"), 
@@ -20332,10 +20336,54 @@ var EditForm = React.createClass({displayName: "EditForm",
       designation: this.refs.designation.value.trim(),
       salary: this.refs.salary.value.trim()
     }
-    AppActions.updateMember(member);
+    this.validationForm(member);
   },
 	handleCancel: function(){
 		AppActions.cancelEdit();
+	},
+	validationForm : function(member){
+		var letters = /^[A-Za-z]+$/;
+		if(member.empNumber!=="" && member.firstName!=="" && member.lastName!=="" && member.age!=="" && member.salary!==""){
+			if(member.age >"0"){
+				if(member.middleName.match(letters) && member.firstName.match(letters) && member.lastName.match(letters)){
+							if (member.designation == "Senior Manager" && member.salary < 100000 || member.salary > 130000) {
+				 			message="Senior Manager Salary must be between $100,000 and $130,000";
+							console.log("test");
+							}else if (member.designation == "Manager" && member.salary < 90000 || member.salary > 99999) {
+								AppActions.cancelEdit();
+								message="Manager Salary must be between $90,000 and $99,999";
+							}else if (member.designation == "Assistant Manager" && member.salary < 80000 || member.salary > 89999) {
+								AppActions.cancelEdit();
+								message="Assistant Manager Salary must be between $80,000 and $89,999";
+							}else if (member.designation == "Lead" && (member.salary < 60000 || member.salary > 79999)) {
+								AppActions.cancelEdit();
+								message="Lead  Salary must be between $60,000 and $79,999";
+							}else if (member.designation == "Senior Consultant" && (member.salary < 50000 || member.salary > 59000)) {
+								AppActions.cancelEdit();
+								message="Senior Consultant Salary must be between $50,000 and $59,999";
+							}else if (member.designation == "Consultant" && (member.salary < 40000 || member.salary > 49000)) {
+								AppActions.cancelEdit();
+								message="Consultant Salary must be between $40,000 and $49,999";
+							}	else {
+								message = "";
+								AppActions.updateMember(member);
+								  		}
+									}
+				else{
+					message = "There is a number in a text field";
+					AppActions.cancelEdit();
+				}
+			}
+			else{
+				AppActions.cancelEdit();
+				message="Your age and salary are wrong";
+			}
+		}
+		else{
+			message= "You are missing some fields";
+			AppActions.cancelEdit();
+
+		}
 	}
 });
 
