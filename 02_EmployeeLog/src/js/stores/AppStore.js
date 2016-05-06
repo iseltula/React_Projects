@@ -8,10 +8,12 @@ var CHANGE_EVENT = 'change';
 
 var _members = [];
 var _member_to_edit = '';
+var _message ='';
 
 var AppStore = assign({}, EventEmitter.prototype, {
-	saveMember: function(member){
+	saveMember: function(member, message){
 		_members.push(member);
+		_message= message;
 	},
 	getMembers: function(){
 		return _members;
@@ -26,11 +28,13 @@ var AppStore = assign({}, EventEmitter.prototype, {
 	},
 	setMemberToEdit: function(member){
 		_member_to_edit = member;
+		_message ='';
 	},
 	getMemberToEdit: function(){
 		return _member_to_edit;
+
 	},
-	updateMember : function(member){
+	updateMember : function(member, message){
 		for(i=0; i <_members.length; i++){
 			if(_members[i].id == member.id){
 				_members.splice(i,1);
@@ -38,9 +42,14 @@ var AppStore = assign({}, EventEmitter.prototype, {
 			}
 		}
 		_member_to_edit='';
+		_message =message;
 	},
-	cancelEdit : function(){
+	cancelEdit : function(message){
 		_member_to_edit='';
+		_message= message;
+	},
+	getMessage : function(){
+		return _message;
 	},
 	emitChange: function(){
 		this.emit(CHANGE_EVENT);
@@ -61,7 +70,7 @@ AppDispatcher.register(function(payload){
 				console.log("Saving Member");
 
 				//Store save
-				AppStore.saveMember(action.member);
+				AppStore.saveMember(action.member, action.message);
 
 				//Save API
 				AppAPI.saveMember(action.member);
@@ -102,7 +111,7 @@ AppDispatcher.register(function(payload){
 			console.log('Updating Member...');
 
 			//Store Update
-			AppStore.updateMember(action.member);
+			AppStore.updateMember(action.member, action.message);
 
 			//API Update
 			AppAPI.updateMember(action.member);
@@ -111,10 +120,10 @@ AppDispatcher.register(function(payload){
 			AppStore.emitChange();
 			break;
 	case AppConstants.CANCEL_EDIT:
-			console.log('Cancel Action...');
+			console.log('Cancel Action...' + action.message);
 
 			//Cancel Action
-			AppStore.cancelEdit(action);
+			AppStore.cancelEdit(action.message);
 
 			//Emit change
 			AppStore.emitChange();

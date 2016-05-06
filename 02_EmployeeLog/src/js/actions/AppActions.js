@@ -2,10 +2,11 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
 
 var AppActions = {
-	saveMember: function(member){
+	saveMember: function(member, message){
 		AppDispatcher.handleViewAction({
 			actionType: AppConstants.SAVE_MEMBER,
-			member:member
+			member:member,
+			message: message
 		});
 	},
 	receiveMembers: function(members){
@@ -26,15 +27,17 @@ var AppActions = {
 			member: member
 		});
 	},
-	updateMember:function(member){
+	updateMember:function(member, message){
 		AppDispatcher.handleViewAction({
 			actionType: AppConstants.UPDATE_MEMBER,
-			member: member
+			member: member,
+			message: message
 		});
 	},
-	cancelEdit:function(){
+	cancelEdit:function(message){
 		AppDispatcher.handleViewAction({
 			actionType: AppConstants.CANCEL_EDIT,
+			message: message
 		});
 	}
 }

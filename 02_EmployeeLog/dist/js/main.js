@@ -20004,10 +20004,11 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
 
 var AppActions = {
-	saveMember: function(member){
+	saveMember: function(member, message){
 		AppDispatcher.handleViewAction({
 			actionType: AppConstants.SAVE_MEMBER,
-			member:member
+			member:member,
+			message: message
 		});
 	},
 	receiveMembers: function(members){
@@ -20028,15 +20029,17 @@ var AppActions = {
 			member: member
 		});
 	},
-	updateMember:function(member){
+	updateMember:function(member, message){
 		AppDispatcher.handleViewAction({
 			actionType: AppConstants.UPDATE_MEMBER,
-			member: member
+			member: member,
+			message: message
 		});
 	},
-	cancelEdit:function(){
+	cancelEdit:function(message){
 		AppDispatcher.handleViewAction({
 			actionType: AppConstants.CANCEL_EDIT,
+			message: message
 		});
 	}
 }
@@ -20046,15 +20049,16 @@ module.exports = AppActions;
 var React = require('react');
 var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
-var message="";
+var message ='';
+var colorValidate;
 
 var AddForm = React.createClass({displayName: "AddForm",
 	render: function(){
 		return(
       React.createElement("div", null, 
         React.createElement("h3", null, "Add Employee"), 
-					React.createElement("p", {className: "alert alert-danger", role: "alert"}, 
-					message
+					React.createElement("p", {className: "alert", role: "alert", style: colorValidate}, 
+					this.props.message
 				), 
         React.createElement("form", {className: "form-horizontal", name: "LogForm", id: "ControlForm"}, 
           React.createElement("div", {className: "form-group"}, 
@@ -20132,51 +20136,100 @@ var AddForm = React.createClass({displayName: "AddForm",
   },
 	validationForm : function(member){
 		var letters = /^[A-Za-z]+$/;
+		var verify = "";
 		if(member.empNumber!=="" && member.firstName!=="" && member.lastName!=="" && member.age!=="" && member.salary!==""){
 			if(member.age >"0"){
 				if(member.middleName.match(letters) && member.firstName.match(letters) && member.lastName.match(letters)){
-							if (member.designation == "Senior Manager" && member.salary < 100000 || member.salary > 130000) {
-								AppActions.cancelEdit();
-				 				message="Senior Manager Salary must be between $100,000 and $130,000";
-							}else if (member.designation == "Manager" && member.salary < 90000 || member.salary > 99999) {
-								AppActions.cancelEdit();
-								message="Manager Salary must be between $90,000 and $99,999";
-							}else if (member.designation == "Assistant Manager" && member.salary < 80000 || member.salary > 89999) {
-								AppActions.cancelEdit();
-								message="Assistant Manager Salary must be between $80,000 and $89,999";
-							}else if (member.designation == "Lead" && (member.salary < 60000 || member.salary > 79999)) {
-								AppActions.cancelEdit();
-								message="Lead  Salary must be between $60,000 and $79,999";
-							}else if (member.designation == "Senior Consultant" && (member.salary < 50000 || member.salary > 59000)) {
-								AppActions.cancelEdit();
-								message="Senior Consultant Salary must be between $50,000 and $59,999";
-							}else if (member.designation == "Consultant" && (member.salary < 40000 || member.salary > 49000)) {
-								AppActions.cancelEdit();
-								message="Consultant Salary must be between $40,000 and $49,999";
-							}	else {
-								message = "";
-								AppActions.saveMember(member);
+							if (member.designation == "Senior Manager") {
+								if( member.salary < "100000" || member.salary > "130000"){
+									message="Senior Manager Salary must be between $100,000 and $130,000";
+									verify = "nonPass";
+								}else{
+									verify = "pass";
+								}
+							} else if (member.designation == "Manager") {
+								if(member.salary < "90000" || member.salary > "99999"){
+									message="Manager Salary must be between $90,000 and $99,999";
+									verify = "nonPass";
+								}else{
+									verify = "pass";
+								}
+							} else if (member.designation == "Assistant Manager") {
+								if(member.salary < "80000" || member.salary > "89999"){
+									message="Assistant Manager Salary must be between $80,000 and $89,999";
+									verify = "nonPass";
+								}else{
+									verify = "pass";
+								}
+							} else if (member.designation == "Lead") {
+								if(member.salary < "60000" || member.salary > "79999"){
+									message="Lead  Salary must be between $60,000 and $79,999";
+									verify = "nonPass";
+								}else{
+									verify = "pass";
+								}
+							} else if (member.designation == "Senior Consultant") {
+								if(member.salary < "50000" || member.salary > "59000"){
+									message="Senior Consultant Salary must be between $50,000 and $59,999";
+									verify = "nonPass";
+								}else{
+									verify = "pass";
+								}
+							} else if (member.designation == "Consultant") {
+								if(member.salary < "40000" || member.salary > "49000"){
+									message="Consultant Salary must be between $40,000 and $49,999";
+									verify = "nonPass";
+								}else{
+									verify = "pass";
+								}
+							}
+
+							if(verify == "pass"){
+								message= "New Employee Saved";
+								colorValidate= {
+									color:'#01CF24'
+								};
+								AppActions.saveMember(member, message);
 								this.refs.empNumber.value="";
 								this.refs.firstName.value="";
 								this.refs.lastName.value="";
 								this.refs.middleName.value="";
 								this.refs.age.value="";
 								this.refs.salary.value="";
-								  		}
+							}
+							else if(verify == "nonPass"){
+									 AppActions.cancelEdit(message);
+									 colorValidate= {
+						 				color:'#AB0303'
+						 			};
 									}
+							}
+
 				else{
-					AppActions.cancelEdit();
+
 					message = "There is a number in a text field";
+					colorValidate= {
+						color:'#AB0303'
+					};
+					AppActions.cancelEdit(message);
 				}
 			}
 			else{
-				AppActions.cancelEdit();
+
 				message="Your age and salary are wrong";
+				colorValidate= {
+					color:'#AB0303'
+				};
+				AppActions.cancelEdit(message);
 			}
 		}
 		else{
-			AppActions.cancelEdit();
+
 			message= "You are missing some fields";
+			colorValidate= {
+				color:'#AB0303'
+			};
+			AppActions.cancelEdit(message);
 
 		}
 	}
@@ -20194,7 +20247,8 @@ var EditForm = require('./EditForm.js');
 function getAppState(){
 	return {
 			members: AppStore.getMembers(),
-			membersToEdit: AppStore.getMemberToEdit()
+			membersToEdit: AppStore.getMemberToEdit(),
+			message: AppStore.getMessage()
 	}
 }
 var App = React.createClass({displayName: "App",
@@ -20212,10 +20266,10 @@ var App = React.createClass({displayName: "App",
 
 	render: function(){
 		if(this.state.membersToEdit == ''){
-			var form = React.createElement(AddForm, null)
+			var form = React.createElement(AddForm, {message: this.state.message})
 		}
 		else{
-			var form = React.createElement(EditForm, {membersToEdit: this.state.membersToEdit})
+			var form = React.createElement(EditForm, {membersToEdit: this.state.membersToEdit, message: this.state.message})
 		}
 		return(
 			React.createElement("div", null, 
@@ -20241,22 +20295,21 @@ module.exports = App;
 var React = require('react');
 var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
-var message="";
-
+var message ="";
 
 var EditForm = React.createClass({displayName: "EditForm",
 	render: function(){
 		return(
       React.createElement("div", null, 
         React.createElement("h3", null, "Edit Employee"), 
-					React.createElement("p", {className: "alert alert-danger", role: "alert", id: "message"}, 
-					message
+					React.createElement("p", {className: "alert alert-danger", role: "alert"}, 
+					this.props.message
 					), 
         React.createElement("form", {className: "form-horizontal", name: "LogForm"}, 
           React.createElement("div", {className: "form-group"}, 
             React.createElement("label", {className: "control-label col-md-4"}, "Employee Number"), 
             React.createElement("div", {className: "col-md-5"}, 
-              React.createElement("input", {required: true, type: "number", ref: "empNumber", className: "form-control", onChange: this.handleChange.bind(this, 'empNumber'), value: this.props.membersToEdit.empNumber})
+              React.createElement("input", {type: "number", ref: "empNumber", className: "form-control", onChange: this.handleChange.bind(this, 'empNumber'), value: this.props.membersToEdit.empNumber})
             )
           ), 
 
@@ -20336,10 +20389,91 @@ var EditForm = React.createClass({displayName: "EditForm",
       designation: this.refs.designation.value.trim(),
       salary: this.refs.salary.value.trim()
     }
-    AppActions.updateMember(member);
+    this.validationForm(member);
   },
 	handleCancel: function(){
-		AppActions.cancelEdit();
+		message= "";
+		AppActions.cancelEdit(message);
+	},
+	validationForm : function(member){
+		var letters = /^[A-Za-z]+$/;
+		var verify = "";
+		if(member.empNumber!=="" && member.firstName!=="" && member.lastName!=="" && member.age!=="" && member.salary!==""){
+			if(member.age >"0"){
+				if(member.middleName.match(letters) && member.firstName.match(letters) && member.lastName.match(letters)){
+							if (member.designation == "Senior Manager") {
+								if( member.salary < "100000" || member.salary > "130000"){
+									message="Senior Manager Salary must be between $100,000 and $130,000";
+									verify = "nonPass";
+								}else{
+									verify = "pass";
+								}
+							} else if (member.designation == "Manager") {
+								if(member.salary < "90000" || member.salary > "99999"){
+									message="Manager Salary must be between $90,000 and $99,999";
+									verify = "nonPass";
+								}else{
+									verify = "pass";
+								}
+							} else if (member.designation == "Assistant Manager") {
+								if(member.salary < "80000" || member.salary > "89999"){
+									message="Assistant Manager Salary must be between $80,000 and $89,999";
+									verify = "nonPass";
+								}else{
+									verify = "pass";
+								}
+							} else if (member.designation == "Lead") {
+								if(member.salary < "60000" || member.salary > "79999"){
+									message="Lead  Salary must be between $60,000 and $79,999";
+									verify = "nonPass";
+								}else{
+									verify = "pass";
+								}
+							} else if (member.designation == "Senior Consultant") {
+								if(member.salary < "50000" || member.salary > "59000"){
+									message="Senior Consultant Salary must be between $50,000 and $59,999";
+									verify = "nonPass";
+								}else{
+									verify = "pass";
+								}
+							} else if (member.designation == "Consultant") {
+								if(member.salary < "40000" || member.salary > "49000"){
+									message="Consultant Salary must be between $40,000 and $49,999";
+									verify = "nonPass";
+								}else{
+									verify = "pass";
+								}
+							}
+
+							if(verify == "pass"){
+								AppActions.updateMember(member, message);
+								this.refs.empNumber.value="";
+								this.refs.firstName.value="";
+								this.refs.lastName.value="";
+								this.refs.middleName.value="";
+								this.refs.age.value="";
+								this.refs.salary.value="";
+							}
+							else if(verify == "nonPass"){
+									 AppActions.cancelEdit(message);
+									}
+							}
+
+				else{
+					message = "There is a number in a text field";
+					AppActions.cancelEdit(message);
+				}
+			}
+			else{
+				message="Your age and salary are wrong";
+				AppActions.cancelEdit(message);
+			}
+		}
+		else{
+			message= "You are missing some fields";
+			AppActions.cancelEdit(message);
+
+		}
 	}
 });
 
@@ -20460,10 +20594,12 @@ var CHANGE_EVENT = 'change';
 
 var _members = [];
 var _member_to_edit = '';
+var _message ='';
 
 var AppStore = assign({}, EventEmitter.prototype, {
-	saveMember: function(member){
+	saveMember: function(member, message){
 		_members.push(member);
+		_message= message;
 	},
 	getMembers: function(){
 		return _members;
@@ -20478,11 +20614,13 @@ var AppStore = assign({}, EventEmitter.prototype, {
 	},
 	setMemberToEdit: function(member){
 		_member_to_edit = member;
+		_message ='';
 	},
 	getMemberToEdit: function(){
 		return _member_to_edit;
+
 	},
-	updateMember : function(member){
+	updateMember : function(member, message){
 		for(i=0; i <_members.length; i++){
 			if(_members[i].id == member.id){
 				_members.splice(i,1);
@@ -20490,9 +20628,14 @@ var AppStore = assign({}, EventEmitter.prototype, {
 			}
 		}
 		_member_to_edit='';
+		_message =message;
 	},
-	cancelEdit : function(){
+	cancelEdit : function(message){
 		_member_to_edit='';
+		_message= message;
+	},
+	getMessage : function(){
+		return _message;
 	},
 	emitChange: function(){
 		this.emit(CHANGE_EVENT);
@@ -20513,7 +20656,7 @@ AppDispatcher.register(function(payload){
 				console.log("Saving Member");
 
 				//Store save
-				AppStore.saveMember(action.member);
+				AppStore.saveMember(action.member, action.message);
 
 				//Save API
 				AppAPI.saveMember(action.member);
@@ -20554,7 +20697,7 @@ AppDispatcher.register(function(payload){
 			console.log('Updating Member...');
 
 			//Store Update
-			AppStore.updateMember(action.member);
+			AppStore.updateMember(action.member, action.message);
 
 			//API Update
 			AppAPI.updateMember(action.member);
@@ -20563,10 +20706,10 @@ AppDispatcher.register(function(payload){
 			AppStore.emitChange();
 			break;
 	case AppConstants.CANCEL_EDIT:
-			console.log('Cancel Action...');
+			console.log('Cancel Action...' + action.message);
 
 			//Cancel Action
-			AppStore.cancelEdit(action);
+			AppStore.cancelEdit(action.message);
 
 			//Emit change
 			AppStore.emitChange();

@@ -8,7 +8,8 @@ var EditForm = require('./EditForm.js');
 function getAppState(){
 	return {
 			members: AppStore.getMembers(),
-			membersToEdit: AppStore.getMemberToEdit()
+			membersToEdit: AppStore.getMemberToEdit(),
+			message: AppStore.getMessage()
 	}
 }
 var App = React.createClass({
@@ -26,10 +27,10 @@ var App = React.createClass({
 
 	render: function(){
 		if(this.state.membersToEdit == ''){
-			var form = <AddForm/>
+			var form = <AddForm message={this.state.message} />
 		}
 		else{
-			var form = <EditForm membersToEdit= {this.state.membersToEdit}/>
+			var form = <EditForm membersToEdit= {this.state.membersToEdit} message={this.state.message}/>
 		}
 		return(
 			<div>
