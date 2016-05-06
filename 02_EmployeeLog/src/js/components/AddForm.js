@@ -2,17 +2,13 @@ var React = require('react');
 var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
 var message ='';
-var colorValidate;
 
 var AddForm = React.createClass({
 	render: function(){
 		return(
       <div>
         <h3>Add Employee</h3>
-					<p className="alert" role="alert" style={colorValidate}>
-					{this.props.message}
-				</p>
-        <form className="form-horizontal" name="LogForm" id="ControlForm">
+				<form className="form-horizontal" name="LogForm" id="ControlForm">
           <div className= "form-group">
             <label className="control-label col-md-4">Employee Number</label>
             <div className="col-md-5">
@@ -69,7 +65,8 @@ var AddForm = React.createClass({
             </div>
           </div>
           <a className= "btn btn-success btn-md" onClick={this.handleSubmit}> Submit <i className="fa fa-plus" aria-hidden="true"></i></a>
-        </form>
+					<a className="btn btn-md btn-primary" onClick={this.handleCancelSubmit} >Cancel <i className="fa fa-times"></i></a>
+      	</form>
       </div>
 		);
 	},
@@ -86,6 +83,10 @@ var AddForm = React.createClass({
     }
 	this.validationForm(member);
   },
+	handleCancelSubmit: function(){
+		message="";
+		AppActions.cancelEdit(message);
+	},
 	validationForm : function(member){
 		var letters = /^[A-Za-z]+$/;
 		var verify = "";
@@ -138,9 +139,6 @@ var AddForm = React.createClass({
 
 							if(verify == "pass"){
 								message= "New Employee Saved";
-								colorValidate= {
-									color:'#01CF24'
-								};
 								AppActions.saveMember(member, message);
 								this.refs.empNumber.value="";
 								this.refs.firstName.value="";
@@ -150,37 +148,25 @@ var AddForm = React.createClass({
 								this.refs.salary.value="";
 							}
 							else if(verify == "nonPass"){
-									 AppActions.cancelEdit(message);
-									 colorValidate= {
-						 				color:'#AB0303'
-						 			};
+								AppActions.cancelEdit(message);
 									}
 							}
 
 				else{
 
 					message = "There is a number in a text field";
-					colorValidate= {
-						color:'#AB0303'
-					};
 					AppActions.cancelEdit(message);
 				}
 			}
 			else{
 
 				message="Your age and salary are wrong";
-				colorValidate= {
-					color:'#AB0303'
-				};
 				AppActions.cancelEdit(message);
 			}
 		}
 		else{
 
 			message= "You are missing some fields";
-			colorValidate= {
-				color:'#AB0303'
-			};
 			AppActions.cancelEdit(message);
 
 		}

@@ -152,6 +152,7 @@ var EditForm = React.createClass({
 							}
 
 							if(verify == "pass"){
+								message="Employee Updated";
 								AppActions.updateMember(member, message);
 								this.refs.empNumber.value="";
 								this.refs.firstName.value="";

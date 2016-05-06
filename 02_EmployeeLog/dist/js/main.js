@@ -20050,17 +20050,13 @@ var React = require('react');
 var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
 var message ='';
-var colorValidate;
 
 var AddForm = React.createClass({displayName: "AddForm",
 	render: function(){
 		return(
       React.createElement("div", null, 
         React.createElement("h3", null, "Add Employee"), 
-					React.createElement("p", {className: "alert", role: "alert", style: colorValidate}, 
-					this.props.message
-				), 
-        React.createElement("form", {className: "form-horizontal", name: "LogForm", id: "ControlForm"}, 
+				React.createElement("form", {className: "form-horizontal", name: "LogForm", id: "ControlForm"}, 
           React.createElement("div", {className: "form-group"}, 
             React.createElement("label", {className: "control-label col-md-4"}, "Employee Number"), 
             React.createElement("div", {className: "col-md-5"}, 
@@ -20116,8 +20112,9 @@ var AddForm = React.createClass({displayName: "AddForm",
               React.createElement("input", {type: "number", ref: "salary", className: "form-control"})
             )
           ), 
-          React.createElement("a", {className: "btn btn-success btn-md", onClick: this.handleSubmit}, " Submit ", React.createElement("i", {className: "fa fa-plus", "aria-hidden": "true"}))
-        )
+          React.createElement("a", {className: "btn btn-success btn-md", onClick: this.handleSubmit}, " Submit ", React.createElement("i", {className: "fa fa-plus", "aria-hidden": "true"})), 
+					React.createElement("a", {className: "btn btn-md btn-primary", onClick: this.handleCancelSubmit}, "Cancel ", React.createElement("i", {className: "fa fa-times"}))
+      	)
       )
 		);
 	},
@@ -20134,6 +20131,10 @@ var AddForm = React.createClass({displayName: "AddForm",
     }
 	this.validationForm(member);
   },
+	handleCancelSubmit: function(){
+		message="";
+		AppActions.cancelEdit(message);
+	},
 	validationForm : function(member){
 		var letters = /^[A-Za-z]+$/;
 		var verify = "";
@@ -20186,9 +20187,6 @@ var AddForm = React.createClass({displayName: "AddForm",
 
 							if(verify == "pass"){
 								message= "New Employee Saved";
-								colorValidate= {
-									color:'#01CF24'
-								};
 								AppActions.saveMember(member, message);
 								this.refs.empNumber.value="";
 								this.refs.firstName.value="";
@@ -20198,37 +20196,25 @@ var AddForm = React.createClass({displayName: "AddForm",
 								this.refs.salary.value="";
 							}
 							else if(verify == "nonPass"){
-									 AppActions.cancelEdit(message);
-									 colorValidate= {
-						 				color:'#AB0303'
-						 			};
+								AppActions.cancelEdit(message);
 									}
 							}
 
 				else{
 
 					message = "There is a number in a text field";
-					colorValidate= {
-						color:'#AB0303'
-					};
 					AppActions.cancelEdit(message);
 				}
 			}
 			else{
 
 				message="Your age and salary are wrong";
-				colorValidate= {
-					color:'#AB0303'
-				};
 				AppActions.cancelEdit(message);
 			}
 		}
 		else{
 
 			message= "You are missing some fields";
-			colorValidate= {
-				color:'#AB0303'
-			};
 			AppActions.cancelEdit(message);
 
 		}
@@ -20243,12 +20229,17 @@ var AppStore = require('../stores/AppStore');
 var AddForm = require('./AddForm.js');
 var MemberList= require('./MemberList.js');
 var EditForm = require('./EditForm.js');
+colorValidate = {};
 
 function getAppState(){
 	return {
 			members: AppStore.getMembers(),
 			membersToEdit: AppStore.getMemberToEdit(),
-			message: AppStore.getMessage()
+			message: AppStore.getMessage(),
+			showAddForm: false,
+			showEditForm: false,
+			showAddButton: true,
+			showEditButton: true
 	}
 }
 var App = React.createClass({displayName: "App",
@@ -20265,28 +20256,67 @@ var App = React.createClass({displayName: "App",
 	},
 
 	render: function(){
-		if(this.state.membersToEdit == ''){
+		if(this.state.membersToEdit == '' && this.state.showAddForm==true){
 			var form = React.createElement(AddForm, {message: this.state.message})
 		}
-		else{
+		else if(this.state.membersToEdit != '') {
+			if(this.state.showEditForm==true){
 			var form = React.createElement(EditForm, {membersToEdit: this.state.membersToEdit, message: this.state.message})
+			}
 		}
+		if(this.state.message=="New Employee Saved" || this.state.message=="Employee Updated"){
+			colorValidate= {
+				color:'#01CF24'
+			};
+		}
+		else{
+			colorValidate= {
+				color:'#AB0303'
+			};
+		}
+		if(this.state.showAddButton==true){
+			var AddButton= React.createElement("a", {className: "btn btn-md btn-default", onClick: this.changeAddShow}, "Add ", React.createElement("i", {class: "fa fa-plus", "aria-hidden": "true"}))
+		}
+		if(this.state.showEditButton==true){
+			var EditButton= React.createElement("a", {className: "btn btn-md btn-default", onClick: this.changeEditShow}, "Edit ", React.createElement("i", {class: "fa fa-pencil", "aria-hidden": "true"}))
+
+		}
+
 		return(
 			React.createElement("div", null, 
-				React.createElement("section", {id: "employeeLog"}, 
-						React.createElement(MemberList, {members: this.state.members})
+				React.createElement("div", null, 
+					React.createElement("section", {id: "employeeLog"}, 
+							React.createElement(MemberList, {members: this.state.members})
+					)
 				), 
-				React.createElement("section", {id: "AddSection"}, 
-					form
+				React.createElement("div", {id: "selectionButton"}, 
+					AddButton, 
+					EditButton
+					), 
+				React.createElement("div", null, 
+					React.createElement("section", {id: "AddSection"}, 
+						React.createElement("p", {className: "alert", role: "alert", style: colorValidate}, 
+							this.state.message
+						), 
+						form
+					)
 				)
-
 			)
+
 		);
 	},
-
-	// Update view state when change is received
 	_onChange: function(){
 		this.setState(getAppState());
+	},
+	changeAddShow: function(){
+		this.setState({showAddForm: true, showEditForm: false, showEditButton:false});
+
+	},
+	changeEditShow: function(){
+		this.setState({showEditForm: true});
+		if(this.state.membersToEdit != ''){
+			this.setState({showAddButton:false});
+		}
 	}
 });
 
@@ -20446,6 +20476,7 @@ var EditForm = React.createClass({displayName: "EditForm",
 							}
 
 							if(verify == "pass"){
+								message="Employee Updated";
 								AppActions.updateMember(member, message);
 								this.refs.empNumber.value="";
 								this.refs.firstName.value="";
@@ -20515,34 +20546,33 @@ var Member = require('./Member.js');
 var MemberList = React.createClass({displayName: "MemberList",
 	render: function(){
 		return(
-      React.createElement("div", {className: "container"}, 
-          React.createElement("h3", null, "Employee Log"), 
-          React.createElement("table", {className: "table table-hover"}, 
-            React.createElement("thead", null, 
-              React.createElement("tr", null, 
-                React.createElement("th", null, "Employee Number"), 
-                React.createElement("th", null, "First Name"), 
-                React.createElement("th", null, "Last Name"), 
-                React.createElement("th", null, "Middle Name"), 
-                React.createElement("th", null, " Age"), 
-                React.createElement("th", null, "Designation"), 
-                React.createElement("th", null, "Salary")
-              )
-            ), 
-            React.createElement("tbody", null, 
-              
-                  this.props.members.map(function(member, index){
-                    return(
-                      React.createElement(Member, {member: member, key: index})
-                    )
-                  })
-              
-            )
-          )
-
-      )
-		);
-	}
+			React.createElement("div", {className: "container"}, 
+				React.createElement("h3", null, "Employee Log"), 
+				React.createElement("table", {className: "table table-hover"}, 
+					React.createElement("thead", null, 
+						React.createElement("tr", null, 
+							React.createElement("th", null, "Employee Number"), 
+							React.createElement("th", null, "First Name"), 
+							React.createElement("th", null, "Last Name"), 
+							React.createElement("th", null, "Middle Name"), 
+							React.createElement("th", null, " Age"), 
+							React.createElement("th", null, "Designation"), 
+							React.createElement("th", null, "Salary")
+						)
+					), 
+					React.createElement("tbody", null, 
+						
+							this.props.members.map(function(member, index){
+								return(
+									React.createElement(Member, {member: member, key: index})
+								)
+							})
+						
+					)
+				)				
+	)
+);
+}
 });
 
 module.exports = MemberList;
