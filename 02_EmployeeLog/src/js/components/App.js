@@ -35,6 +35,7 @@ var App = React.createClass({
 			var form = <AddForm message={this.state.message} />
 		}
 		else if(this.state.membersToEdit != '') {
+			this.state.showAddButton=false;
 			if(this.state.showEditForm==true){
 			var form = <EditForm membersToEdit= {this.state.membersToEdit} message={this.state.message}/>
 			}

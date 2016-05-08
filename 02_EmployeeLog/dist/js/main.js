@@ -308,6 +308,9 @@ var currentQueue;
 var queueIndex = -1;
 
 function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
     draining = false;
     if (currentQueue.length) {
         queue = currentQueue.concat(queue);
@@ -20260,6 +20263,7 @@ var App = React.createClass({displayName: "App",
 			var form = React.createElement(AddForm, {message: this.state.message})
 		}
 		else if(this.state.membersToEdit != '') {
+			this.state.showAddButton=false;
 			if(this.state.showEditForm==true){
 			var form = React.createElement(EditForm, {membersToEdit: this.state.membersToEdit, message: this.state.message})
 			}
