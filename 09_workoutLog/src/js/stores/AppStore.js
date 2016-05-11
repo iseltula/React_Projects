@@ -22,6 +22,13 @@ var AppStore = assign({}, EventEmitter.prototype, {
 	getWorkouts: function(){
 		return _workouts;
 	},
+	receiveWorkouts: function(workouts){
+		_workouts = workouts;
+	},
+	removeWorkout: function(workoutId){
+		var index = _workouts.findIndex(x=>x.id ===workoutId);
+		_workouts.splice(index, 1);
+	},
 	emitChange: function(){
 		this.emit(CHANGE_EVENT);
 	},
@@ -38,22 +45,45 @@ AppDispatcher.register(function(payload){
 
 	switch(action.actionType){
 		case AppConstants.SHOW_FORM:
-			console.log('Showing Form...');
-			AppStore.showForm();
-			//Emit change
-			AppStore.emitChange();
-			break;
+		console.log('Showing Form...');
+		AppStore.showForm();
+		//Emit change
+		AppStore.emitChange();
+		break;
+
 		case AppConstants.ADD_WORKOUT:
-			console.log('Adding ...');
-			//Store
-			AppStore.addWorkout(action.workout);
+		console.log('Adding ...');
+		//Store
+		AppStore.addWorkout(action.workout);
 
-			//AppAPI
-			AppAPI.addWorkout(action.workout);
+		//AppAPI
+		AppAPI.addWorkout(action.workout);
 
-			//Emit change
-			AppStore.emitChange();
-			break;
+		//Emit change
+		AppStore.emitChange();
+		break;
+
+		case AppConstants.RECEIVE_WORKOUTS:
+		console.log('Receiving ...');
+		//Store
+		AppStore.receiveWorkouts(action.workouts);
+
+		//Emit change
+		AppStore.emitChange();
+		break;
+
+		case AppConstants.REMOVE_WORKOUT:
+		console.log('Removing ...');
+		//Store
+		AppStore.removeWorkout(action.workoutId);
+
+		//AppAPI
+		AppAPI.removeWorkout(action.workoutId);
+
+		//Emit change
+		AppStore.emitChange();
+		break;
+
 
 	}
 
